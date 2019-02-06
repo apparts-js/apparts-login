@@ -1,0 +1,23 @@
+{
+  "name": "apparts-login",
+  "version": "1.0.0",
+  "description": "Login and Signup for Web, Apps, Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@ph-uhl.com:Apparts/apparts-login.git"
+  },
+  "keywords": [
+    "apparts",
+    "app",
+    "server",
+    "node",
+    "login",
+    "signup"
+  ],
+  "author": "Philipp Uhl",
+  "license": "UNLICENSED"
+}
