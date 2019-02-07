@@ -19,5 +19,14 @@
     "signup"
   ],
   "author": "Philipp Uhl",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "apparts-frontend-api": "git+ssh://git@ph-uhl.com:Apparts/apparts-frontend-api.git#semver:^1.0.0",
+    "apparts-react-native-components": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-native-components.git#semver:^1.0.0",
+    "apparts-react-navigation": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-navigation.git#semver:^1.0.0",
+    "apparts-redux": "git+ssh://git@ph-uhl.com:Apparts/apparts-redux.git#semver:^1.0.0",
+    "base-64": "^0.1.0",
+    "react": "^16.8.1",
+    "react-native": "^0.58.4"
+  }
 }

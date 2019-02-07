@@ -2,5 +2,61 @@
 #+DATE: [2019-02-06 Wed]
 #+AUTHOR: Philipp Uhl
 
+* Frontend
 
+** Redux Interface
+
+This component provides the states
+- ~token~ :: The Basic-auth token for the API
+- ~id~ :: The users ID
+- ~name~ :: The users name
+- ~email~ :: The users Email-Address
+
+In order to logout a user simply delete the complete store and return
+to the Login screen.
+
+** Screens
+
+This component provides the screens
+- ~Apparts.Login~ :: A Login-page for login with username and password
+- ~Apparts.Signup~ :: A Signup-page for username, password, name
+
+** Configuration
+
+The configuration option for this component are:
+- ~screenAfterLogin {string}~ :: The screen to maneuver to after
+     successful login
+
+** Usage
+
+1. To register the screens include the package =apparts-login= in your
+   =src/screens/index.js= like this:
+
+   #+BEGIN_SRC js
+   export { Login, Signup } from 'apparts-login';
+   #+END_SRC
+
+2. To use the default language files import them like this in your
+   =src/lang/index.js=:
+
+   #+BEGIN_SRC js
+   import * as AppartsLogin from 'apparts-login';
+   const lang = {};
+   // ...
+   Object.assign(lang, AppartsLogin.lang);
+   // ...
+   export default lang;
+   #+END_SRC
+
+   You can partly overwrite the provided ~lang~-Object if necessary.
+
+3. In order to start the application with a login/signup-screen:
+
+   #+BEGIN_SRC js
+   import { startApp } from './src/utils/navigation';
+   // get Store s
+   startApp({ startScreen: 'Apparts.Signup', store: s});
+   #+END_SRC
+
+* Backend
 
