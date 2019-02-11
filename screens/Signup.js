@@ -3,6 +3,7 @@ import { connect } from 'apparts-redux';
 import * as actions from '../actions/index';
 import { StyleSheet, View, Button, Alert } from 'react-native';
 const Colors = require('apparts-config').get('color');
+const LoginConf = require('apparts-config').get('login');
 import { MyText, MyTextInput, MyLink, MyInput, MySubmit,
          MyScrollView, MyFooter} from 'apparts-react-native-components';
 import { checkMail, checkPW } from '../util.js';
@@ -101,7 +102,7 @@ class SignupWrapper extends Screen {
         })
         .then(x => {
           this.props.storeTokenAndId(mail, x.token, x.id);
-          navigation.resetTo('AfterLogin');
+          navigation.resetTo(LoginConf.screenAfterSignup);
         })
         .catch(handleApiError(
           { '400.user exists': lang.signup.userExists,

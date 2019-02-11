@@ -3,6 +3,7 @@ import { connect } from 'apparts-redux';
 import * as actions from '../actions/index';
 import { StyleSheet, View, Button, Alert, Text } from 'react-native';
 const Colors = require('apparts-config').get('color');
+const LoginConf = require('apparts-config').get('login');
 import { MyText, MyTextInput, MyLink, MyInput, MyFooter,
          MySubmit, MyScrollView } from 'apparts-react-native-components';
 import { checkMail, checkPWLoose } from '../util.js';
@@ -88,7 +89,7 @@ class Login extends Screen {
         })
         .then(x => {
           this.props.storeName(x.name);
-          this.resetTo('taskX.SelectGroup');
+          this.resetTo(LoginConf.screenAfterLogin);
         })
         .catch(handleApiError(
           { 401: lang.login.authWrong },

@@ -26,6 +26,42 @@ This component provides the screens
 The configuration option for this component are:
 - ~screenAfterLogin {string}~ :: The screen to maneuver to after
      successful login
+- ~screenAfterSignup {string}~ :: The screen to maneuver to after
+     successful signup
+
+For using the =apparts-config= module with react native it is
+necessary to use the =babel-plugin-module-resolver= module in order to
+replace the =apparts-config= module project wide with a short file
+that implements the function ~get~ like this:
+
+#+BEGIN_SRC js
+module.exports.get = (config) => {
+  return {
+    // my configs
+    login: {
+      screenAfterLogin: 'myApp.main',
+      screenAfterSignup: 'myApp.welcome'
+    }
+  }[config];
+};
+#+END_SRC
+
+The respective babel configuration in the file =babel.config.js= would
+be:
+
+#+BEGIN_SRC js
+module.exports = {
+  // ...
+  "plugins": [
+    ["module-resolver", {
+      "alias": {
+        "apparts-config": "./src/config.js",
+        "apparts-react-navigation": "./node_modules/apparts-react-navigation"
+      }
+    }]
+  ]
+};
+#+END_SRC
 
 ** Usage
 
@@ -74,3 +110,4 @@ The configuration option for this component are:
 
 * Backend
 
+...
