@@ -167,4 +167,4 @@ navigation.registerScreen('Apparts.Signup', {
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 
-export default SignupWrapper;
+export { SignupWrapper as Signup };

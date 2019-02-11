@@ -58,5 +58,19 @@ The configuration option for this component are:
    startApp({ startScreen: 'Apparts.Signup', store: s});
    #+END_SRC
 
+4. It might be necessary to limit the directories from which modules
+   can be imported to only the root level of =node_modules= by putting
+   the following into your =webpack= configuration
+
+   #+BEGIN_SRC js
+     resolve: {
+       // ...
+       alias: {
+         // ...
+         'apparts-react-navigation': join(__dirname, './node_modules/apparts-react-navigation')
+       }
+     }
+   #+END_SRC
+
 * Backend
 

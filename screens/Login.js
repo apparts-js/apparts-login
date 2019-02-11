@@ -140,4 +140,4 @@ navigation.registerScreen('Apparts.Login', {
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 
-export default Login;
+export { Login };
