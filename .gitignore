@@ -6,6 +6,10 @@
 #project related files
 npm-debug.log
 node_modules/
+logs/
+config/*.json
+!config/*.example.json
+
 
 #tern files
 .tern-port

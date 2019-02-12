@@ -6,7 +6,7 @@ const Colors = require('apparts-config').get('color');
 const LoginConf = require('apparts-config').get('login');
 import { MyText, MyTextInput, MyLink, MyInput, MySubmit,
          MyScrollView, MyFooter} from 'apparts-react-native-components';
-import { checkMail, checkPW } from '../util.js';
+import { checkMail, checkPW, checkName } from '../util.js';
 import * as navigation from 'apparts-react-navigation';
 import { Screen } from 'apparts-react-navigation';
 import { get, post, basicAuth, handleApiError } from 'apparts-frontend-api';
@@ -119,7 +119,7 @@ class SignupWrapper extends Screen {
   }
 
   validateName(value=""){
-    const res = value.length > 2;
+    const res = checkName(x);
     this.setState({validName: res});
     return res;
   }
