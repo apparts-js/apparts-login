@@ -1,6 +1,6 @@
 {
   "name": "apparts-login",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Login and Signup for Web, Apps, Server",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,10 @@
   },
   "keywords": [
     "apparts",
+    "web",
+    "webapp",
     "app",
-    "server",
+    "client",
     "node",
     "login",
     "signup"
@@ -24,15 +26,6 @@
   "license": "UNLICENSED",
   "dependencies": {
     "apparts-config": "git+ssh://git@ph-uhl.com:Apparts/apparts-config#semver:^1.0.0",
-    "apparts-error": "git+ssh://git@ph-uhl.com:Apparts/apparts-error#semver:^1.0.0",
-    "apparts-model": "git+ssh://git@ph-uhl.com:Apparts/apparts-model#semver:^1.0.0",
-    "apparts-node-app": "git+ssh://git@ph-uhl.com:Apparts/apparts-node-app#semver:^1.0.0",
-    "apparts-types": "git+ssh://git@ph-uhl.com:Apparts/apparts-types#semver:^1.0.0",
-    "bcrypt-nodejs": "0.0.3",
-    "crypto": "^1.0.1",
-    "express": "^4.16.4"
-  },
-  "peerDependencies": {
     "apparts-frontend-api": "git+ssh://git@ph-uhl.com:Apparts/apparts-frontend-api.git#semver:^1.0.0",
     "apparts-react-native-components": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-native-components.git#semver:^1.0.0",
     "apparts-react-navigation": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-navigation.git#semver:^1.0.0",
@@ -40,12 +33,5 @@
     "base-64": "^0.1.0",
     "react": "^16.8.1",
     "react-native": "^0.58.4",
-    "apparts-error": "git+ssh://git@ph-uhl.com:Apparts/apparts-error#semver:^1.0.0",
-    "apparts-model": "git+ssh://git@ph-uhl.com:Apparts/apparts-model#semver:^1.0.0",
-    "apparts-types": "git+ssh://git@ph-uhl.com:Apparts/apparts-types#semver:^1.0.0",
-    "bcrypt-nodejs": "0.0.3",
-    "crypto": "^1.0.1",
-    "express": "^4.16.4",
-    "apparts-node-app": "git+ssh://git@ph-uhl.com:Apparts/apparts-node-app#semver:^1.0.0"
   }
 }
