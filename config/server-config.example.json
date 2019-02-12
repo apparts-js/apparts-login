@@ -1,4 +1,5 @@
 {
   "trustProxy": false,
-  "allowedHosts": []
+  "allowedHosts": [],
+  "port": 3000
 }

@@ -1,6 +1,6 @@
 {
   "name": "apparts-login",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Login and Signup for Web, Apps, Server",
   "main": "index.js",
   "scripts": {
