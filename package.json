@@ -32,6 +32,6 @@
     "apparts-redux": "git+ssh://git@ph-uhl.com:Apparts/apparts-redux.git#semver:^1.0.0",
     "base-64": "^0.1.0",
     "react": "^16.8.1",
-    "react-native": "^0.58.4",
+    "react-native": "^0.58.4"
   }
 }
