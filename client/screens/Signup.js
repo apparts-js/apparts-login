@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'apparts-redux';
 import * as actions from '../actions/index';
-import { StyleSheet, View, Button, Alert } from 'react-native';
+import { StyleSheet, View, Button, Alert, Text } from 'react-native';
 const Colors = require('apparts-config').get('color');
 const LoginConf = require('apparts-config').get('login');
 import { MyText, MyTextInput, MyLink, MyInput, MySubmit,

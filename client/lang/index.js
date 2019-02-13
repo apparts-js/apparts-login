@@ -25,7 +25,7 @@ export const eng = {
       login: 'Login with existing account',
       h1: '1. Signup',
       userExists: {
-        text1: 'Someone already registerd using this email'
+        text1: 'Someone already registered using this email'
           + ' address. Please register using another email address. If'
           + ' you have forgotten your password you can reset it ',
         link: 'here',
@@ -33,7 +33,7 @@ export const eng = {
       },
       mailInvalid: {
         title: 'Email wrong',
-        text: 'Your email address apears to be invalid. Please check it'
+        text: 'Your email address appears to be invalid. Please check it'
           + ' and try again.'
       }
     },
@@ -43,7 +43,22 @@ export const eng = {
       authWrong: {
         title: 'Wrong Login',
         text: 'Your username or password is not correct.'
-      }
+      },
+      pwForgotten: 'Password forgotten?'
+    },
+    pwForgotten: {
+      h1: 'Password forgotten',
+      done: 'Don\'t worry, we have send you an email to the specified address.'
+        + ' Please follow the instructions in the email to set a new password.'
+    },
+    resetPw: {
+      h1: 'Reset your Password',
+      noToken: 'There must have happened some kind of error: This is not a'
+        + ' proper password reset link. Please check again or contact customer'
+        + ' support.',
+      instructions: 'Please enter a new password:',
+      done: 'Your password was reset successfully! You can login with your new'
+        + ' password now.'
     }
   }
 };

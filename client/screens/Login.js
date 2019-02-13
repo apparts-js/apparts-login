@@ -16,7 +16,9 @@ import * as lang from '../lang';
 const styles = StyleSheet.create({
   heading: {
     fontSize: 30,
-    textAlign: 'left'
+    textAlign: 'left',
+    paddingBottom: 25
+
   },
   outerWrapper: {
     padding: 30,
@@ -145,7 +147,7 @@ class Login extends Screen {
         validatePw={this.validatePw.bind(this)}
         onMailChange={mail => this.setState({mail})}
         onPwChange={pw => this.setState({pw})}
-        onPwForgotten={() => this.resetTo('Apparts.PwForgotten')}
+        onPwForgotten={() => this.push('Apparts.PwForgotten')}
         mail={this.state.mail || ''}
         pw={this.state.pw || ''}
         lang={this.props.lang["apparts-login"]}
