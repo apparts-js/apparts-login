@@ -80,12 +80,10 @@ module.exports = {
    =src/lang/index.js=:
 
    #+BEGIN_SRC js
+   import * as eng from './eng';
    import * as AppartsLogin from 'apparts-login';
-   const lang = {};
-   // ...
-   Object.assign(lang, AppartsLogin.lang);
-   // ...
-   export default lang;
+   const lang = { eng: {...AppartsLogin.lang.eng, ...eng.eng }};
+   module.exports = lang;
    #+END_SRC
 
    You can partly overwrite the provided ~lang~-Object if necessary.
@@ -364,4 +362,39 @@ name=dude
 // Date: Tue, 12 Feb 2019 15:57:51 GMT
 // Connection: keep-alive
 // Request duration: 0.237280s
+#+END_SRC
+
+* Test
+
+
+
+
+#+BEGIN_SRC restclient
+
+
+POST http://127.0.0.1:3001/v1/user/
+Content-Type: application/json; charset=utf-8
+{"email":"testweb.de","password":"a12345","name":"Testuser"}
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "error": "Fieldmissmatch",
+  "field": "body",
+  "message": {
+    "email": "expected email"
+  }
+}
+// POST http://127.0.0.1:3001/v1/user/
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Vary: Origin
+// Access-Control-Allow-Credentials: true
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 78
+// ETag: W/"4e-q12YiSuG3vphm5d0GGpdl7X5fwI"
+// Date: Tue, 12 Feb 2019 23:22:26 GMT
+// Connection: keep-alive
+// Request duration: 0.002617s
 #+END_SRC

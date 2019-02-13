@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'apparts-redux';
 import * as actions from '../actions/index';
-import { StyleSheet, View, Button, Alert, Text } from 'react-native';
+import { StyleSheet, Platform, View, Button, Alert, Text } from 'react-native';
 const Colors = require('apparts-config').get('color');
 const LoginConf = require('apparts-config').get('login');
 import { MyText, MyTextInput, MyLink, MyInput, MyFooter,
@@ -24,14 +24,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'center'
+  },
+  pwForgotten: {
+    alignSelf: 'flex-end',
+    marginTop: -10,
+    ...Platform.select({
+      web: {
+        marginRight: 10
+      },
+      android: {
+        marginRight: 5
+      }
+    })
   }
 });
 
-const LoginView = ({ lang, onMailChange, onPwChange,
-                     validMail, validPw,
-                     validateMail, validatePw,
-                     onSignup, login, disabled, mail, pw }) =>
-      (
+class LoginView extends Component {
+  render() {
+    const { lang, onMailChange, onPwChange,
+            validMail, validPw, validateMail, validatePw,
+            onSignup, login, onPwForgotten, disabled, mail, pw } = this.props;
+    return (
         <MyScrollView>
           <View style={styles.outerWrapper}>
             <MyText style={styles.heading}>
@@ -43,14 +56,23 @@ const LoginView = ({ lang, onMailChange, onPwChange,
                      keyboardType="email-address"
                      autoCapitalize={'none'}
                      onChangeText={onMailChange}
-                     value={mail} />
+                     value={mail}
+                     next={() => this._firstInput} />
             <MyInput validate={validatePw}
                      valid={validPw}
                      placeholder={lang.account.password}
                      secureTextEntry={true}
                      autoCapitalize={'none'}
                      onChangeText={onPwChange}
+                     ref={input => this._firstInput = input}
+                     next={login}
                      value={pw} />
+            <MyLink
+              onPress={onPwForgotten}
+              style={styles.pwForgotten}
+              disabled={disabled}>
+              {lang.login.pwForgotten}
+            </MyLink>
             <MySubmit text={lang.controlls.continue}
                       onPress={login} disabled={disabled}/>
           </View>
@@ -62,7 +84,9 @@ const LoginView = ({ lang, onMailChange, onPwChange,
             </MyLink>
           </MyFooter>
         </MyScrollView>
-      );
+    );
+  }
+}
 
 
 class Login extends Screen {
@@ -76,7 +100,6 @@ class Login extends Screen {
 
   login(){
     const {pw, name, mail} = this.state;
-    const lang = this.props.lang;
     const mailValid = this.validateMail(mail);
     const pwValid = this.validatePw(pw);
     if(mailValid && pwValid){
@@ -91,9 +114,13 @@ class Login extends Screen {
           this.props.storeName(x.name);
           this.resetTo(LoginConf.screenAfterLogin);
         })
-        .catch(handleApiError(
-          { 401: lang.login.authWrong },
-          () => this.setState({disabled: false})));
+        .catch(x => {
+          if(x.status === 401){
+            this.setState({ disabled: false, validMail: false, validPw: false });
+          } else {
+            handleApiError({}, () => this.setState({disabled: false}))(x);
+          }
+        });
     }
   }
 
@@ -118,9 +145,10 @@ class Login extends Screen {
         validatePw={this.validatePw.bind(this)}
         onMailChange={mail => this.setState({mail})}
         onPwChange={pw => this.setState({pw})}
+        onPwForgotten={() => this.resetTo('Apparts.PwForgotten')}
         mail={this.state.mail || ''}
         pw={this.state.pw || ''}
-        lang={this.props.lang}
+        lang={this.props.lang["apparts-login"]}
         login={this.login.bind(this)}
         global={this.props.global}
         disabled={this.state.disabled}
@@ -137,7 +165,7 @@ Login = connect(
 
 navigation.registerScreen('Apparts.Login', {
   clazz: Login,
-  title: (store) => lang[store.global.lang].login.h1,
+  title: (store) => lang[store.global.lang]["apparts-login"].login.h1,
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 

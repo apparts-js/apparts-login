@@ -1,4 +1,6 @@
 {
   "nameLengthMin": 3,
-  "pwLengthMin": 3
+  "pwLengthMin": 3,
+  "screenAfterLogin": "app.main",
+  "screenAfterSignup": "welcome"
 }

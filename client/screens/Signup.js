@@ -28,22 +28,30 @@ const styles = StyleSheet.create({
   }
 });
 
-const Signup = ({ lang, name, mail, pw,
-                  validMail, validName, validPw,
-                  validateMail, validateName, validatePw,
-                  onChangeMail, onChangeName, onChangePw,
-                  submit, disabled, onLogin }) =>
-      (
+class Signup extends Component {
+  render() {
+    const { lang, name, mail, pw,
+            validMail, validName, validPw, mailTaken,
+            validateMail, validateName, validatePw,
+            onChangeMail, onChangeName, onChangePw,
+            submit, disabled, onLogin, onPwForgotten } = this.props;
+    let mailError = !mailTaken ? lang.account.mailError : {
+      ...lang.signup.userExists,
+      onPress: onPwForgotten
+    };
+
+    return (
         <MyScrollView>
           <View style={styles.outerWrapper}>
             <MyText style={styles.heading}>{lang.signup.h1}</MyText>
-            <MyInput valid={validMail}
+            <MyInput valid={validMail && !mailTaken }
                      validate={validateMail}
                      placeholder={lang.account.mail}
                      keyboardType="email-address"
                      autoCapitalize={'none'}
                      value={mail}
-                     error={lang.account.mailError}
+                     error={mailError}
+                     next={() => this._input2}
                      onChangeText={onChangeMail}/>
             <MyInput valid={validName}
                      validate={validateName}
@@ -51,6 +59,8 @@ const Signup = ({ lang, name, mail, pw,
                      autoCorrect={false}
                      value={name}
                      error={lang.account.nameError}
+                     next={() => this._input3}
+                     ref={input => this._input2 = input}
                      onChangeText={onChangeName}/>
             <MyInput valid={validPw}
                      validate={validatePw}
@@ -59,6 +69,8 @@ const Signup = ({ lang, name, mail, pw,
                      autoCapitalize={'none'}
                      value={pw}
                      error={lang.account.passwordError}
+                     next={submit}
+                     ref={input => this._input3 = input}
                      onChangeText={onChangePw}/>
             <MySubmit text={lang.controlls.continue}
                       onPress={submit}
@@ -72,7 +84,9 @@ const Signup = ({ lang, name, mail, pw,
             </MyLink>
           </MyFooter>
         </MyScrollView>
-);
+    );
+  }
+};
 
 class SignupWrapper extends Screen {
   constructor(props){
@@ -98,29 +112,44 @@ class SignupWrapper extends Screen {
         .then(x => {
           this.props.storeEmail(mail);
           this.props.storeName(name);
-          return get('user/aa/token', basicAuth(mail, pw));
-        })
-        .then(x => {
           this.props.storeTokenAndId(mail, x.token, x.id);
           navigation.resetTo(LoginConf.screenAfterSignup);
         })
-        .catch(handleApiError(
-          { '400.user exists': lang.signup.userExists,
-            '400.Fieldmissmatch ( body: {"email":"expected email"})':
-            lang.signup.mailInvalid},
-          () => this.setState({disabled: false})));
+        .catch(x => {
+          if(x.status === 400){
+            x.json()
+              .then(({ error, message }) => {
+                if(error === "Username taken"){
+                  this.setState({ disabled: false, mailTaken: true });
+                } else if(error === "Fieldmissmatch"
+                          && message && message.email === "expected email") {
+                  this.setState({ disabled: false, validMail: false });
+                } else if(error === "Fieldmissmatch"
+                          && message && message.password === "expected password") {
+                  this.setState({ disabled: false, validPw: false });
+                } else {
+                  handleApiError({}, () => this.setState({disabled: false}));
+                }
+              })
+              .catch(() => {
+                handleApiError({}, () => this.setState({disabled: false}));
+              });
+          } else {
+            handleApiError({}, () => this.setState({disabled: false}));
+          }
+        });
     }
   }
 
   validateMail(x=""){
     const res = checkMail(x);
-    this.setState({validMail: res});
+    this.setState({validMail: res, mailTaken: false});
     return res;
   }
 
   validateName(value=""){
-    const res = checkName(x);
-    this.setState({validName: res});
+    const res = checkName(value);
+    this.setState({validName: res });
     return res;
   }
 
@@ -135,17 +164,19 @@ class SignupWrapper extends Screen {
     let state = this.state;
     return (
       <Signup
-        lang={lang}
+        lang={lang["apparts-login"]}
         validMail={state.validMail}
         validName={state.validName}
         validPw={state.validPw}
+        mailTaken={state.mailTaken}
         validateMail={this.validateMail.bind(this)}
         validateName={this.validateName.bind(this)}
         validatePw={this.validatePw.bind(this)}
         onChangeMail={mail => this.setState({ mail })}
         onChangeName={name => this.setState({ name })}
         onChangePw={pw => this.setState({ pw })}
-        onLogin={() => navigation.resetTo(this.props.componentId, 'Apparts.Login')}
+        onLogin={() => this.resetTo('Apparts.Login')}
+        onPwForgotten={() => this.resetTo('Apparts.PwForgotten')}
         submit={this.submit.bind(this)}
         disabled={state.disabled}
         mail={state.mail || ''}
@@ -164,7 +195,7 @@ SignupWrapper = connect(
 
 navigation.registerScreen('Apparts.Signup', {
   clazz: SignupWrapper,
-  title: (store) => lang[store.global.lang].signup.h1,
+  title: (store) => lang[store.global.lang]["apparts-login"].signup.h1,
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 
