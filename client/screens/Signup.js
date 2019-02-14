@@ -180,7 +180,7 @@ class SignupWrapper extends Screen {
         onChangeName={name => this.setState({ name })}
         onChangePw={pw => this.setState({ pw })}
         onLogin={() => this.resetTo('Apparts.Login')}
-        onPwForgotten={() => this.resetTo('Apparts.PwForgotten')}
+        onPwForgotten={() => this.push('Apparts.PwForgotten')}
         submit={this.submit.bind(this)}
         disabled={state.disabled}
         mail={state.mail || ''}
