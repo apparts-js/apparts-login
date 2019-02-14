@@ -115,7 +115,6 @@ PwForgotten = connect(
 
 navigation.registerScreen('Apparts.PwForgotten', {
   clazz: PwForgotten,
-  title: (store) => lang[store.global.lang]["apparts-login"].pwForgotten.h1,
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 

@@ -4,7 +4,8 @@ import * as actions from '../actions/index';
 import { StyleSheet, View, Button, Alert, Text } from 'react-native';
 const Colors = require('apparts-config').get('color');
 const LoginConf = require('apparts-config').get('login');
-import { MyText, MyTextInput, MyLink, MyInput, MySubmit,
+const LangConf = require('apparts-config').get('lang');
+import { MyText, MyTextInput, MyLink, MyInput, MySubmit, MyCountrySelect,
          MyScrollView, MyFooter} from 'apparts-react-native-components';
 import { checkMail, checkPW, checkName } from '../util.js';
 import * as navigation from 'apparts-react-navigation';
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
 
 class Signup extends Component {
   render() {
-    const { lang, name, mail, pw,
+    const { lang, language, name, mail, pw,
             validMail, validName, validPw, mailTaken,
             validateMail, validateName, validatePw,
             onChangeMail, onChangeName, onChangePw,
@@ -44,6 +45,9 @@ class Signup extends Component {
         <MyScrollView>
           <View style={styles.outerWrapper}>
             <MyText style={styles.heading}>{lang.signup.h1}</MyText>
+            <MyCountrySelect
+              {...language}
+              style={{ position: 'absolute', top: 33, right: 25 }}/>
             <MyInput valid={validMail && !mailTaken }
                      validate={validateMail}
                      placeholder={lang.account.mail}
@@ -182,6 +186,11 @@ class SignupWrapper extends Screen {
         mail={state.mail || ''}
         name={state.name || ''}
         pw={state.pw || ''}
+        language={{
+          languages: LangConf.supportedLangs,
+          onSelect: this.props.setLanguage,
+          language: this.props.global.lang
+        }}
         />);
   }
 };
@@ -190,12 +199,12 @@ SignupWrapper = connect(
   ({ }) => ({ }),
   [ actions.storeTokenAndId,
     actions.storeEmail,
-    actions.storeName
+    actions.storeName,
+    actions.setLanguage
   ])(SignupWrapper);
 
 navigation.registerScreen('Apparts.Signup', {
   clazz: SignupWrapper,
-  title: (store) => lang[store.global.lang]["apparts-login"].signup.h1,
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 

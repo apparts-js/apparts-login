@@ -73,7 +73,6 @@ PwForgottenDone = connect(
 
 navigation.registerScreen('Apparts.PwForgottenDone', {
   clazz: PwForgottenDone,
-  title: (store) => lang[store.global.lang]["apparts-login"].pwForgotten.h1,
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 

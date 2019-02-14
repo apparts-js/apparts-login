@@ -4,13 +4,14 @@ import * as actions from '../actions/index';
 import { StyleSheet, Platform, View, Button, Alert, Text } from 'react-native';
 const Colors = require('apparts-config').get('color');
 const LoginConf = require('apparts-config').get('login');
+const LangConf = require('apparts-config').get('lang');
 import { MyText, MyTextInput, MyLink, MyInput, MyFooter,
-         MySubmit, MyScrollView } from 'apparts-react-native-components';
+         MySubmit, MyScrollView,
+         MyCountrySelect } from 'apparts-react-native-components';
 import { checkMail, checkPWLoose } from '../util.js';
 import * as navigation from 'apparts-react-navigation';
 import { Screen } from 'apparts-react-navigation';
 import { get, basicAuth, handleApiError } from 'apparts-frontend-api';
-import * as lang from '../lang';
 
 
 const styles = StyleSheet.create({
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 
 class LoginView extends Component {
   render() {
-    const { lang, onMailChange, onPwChange,
+    const { lang, language, onMailChange, onPwChange,
             validMail, validPw, validateMail, validatePw,
             onSignup, login, onPwForgotten, disabled, mail, pw } = this.props;
     return (
@@ -52,6 +53,10 @@ class LoginView extends Component {
             <MyText style={styles.heading}>
               {lang.login.h1}
             </MyText>
+            <MyCountrySelect
+              {...language}
+              style={{ position: 'absolute', top: 33, right: 25 }}/>
+
             <MyInput validate={validateMail}
                      valid={validMail}
                      placeholder={lang.account.mail}
@@ -154,6 +159,11 @@ class Login extends Screen {
         login={this.login.bind(this)}
         global={this.props.global}
         disabled={this.state.disabled}
+        language={{
+          languages: LangConf.supportedLangs,
+          onSelect: this.props.setLanguage,
+          language: this.props.global.lang
+        }}
         onSignup={() => this.resetTo('Apparts.Signup')}/>
     );
   }
@@ -162,12 +172,12 @@ class Login extends Screen {
 Login = connect(
   ({ }) => ({ }),
   [ actions.storeTokenAndId,
-    actions.storeName
+    actions.storeName,
+    actions.setLanguage
   ])(Login);
 
 navigation.registerScreen('Apparts.Login', {
   clazz: Login,
-  title: (store) => lang[store.global.lang]["apparts-login"].login.h1,
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 

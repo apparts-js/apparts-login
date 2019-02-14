@@ -62,3 +62,67 @@ export const eng = {
     }
   }
 };
+
+export const de = {
+  "apparts-login": {
+    account: {
+      mail: 'Email',
+      mailError: 'Muss eine echte Email-Adresse sein',
+      name: 'Name',
+      nameError: `Ihr Nutzername muss mindestens ${LoginConf.nameLengthMin} Zeichen lang sein`,
+      password: 'Password',
+      passwordError: `Ihr Passwort muss mindestens ${LoginConf.pwLengthMin}`
+        + ' Zeichen lang sein und mindestens eine Nummer und ein Sonderzeichen enthalten'
+    },
+    controlls: {
+      continue: 'Weiter',
+      cancel: 'Abbrechen',
+      retry: 'Wiederholen',
+      save: 'Speichern',
+      ok: 'Ok'
+    },
+    simpleLanguage: {
+      or: 'oder'
+    },
+    signup: {
+      login: 'Mit existierendem Account anmelden',
+      h1: '1. Registrieren',
+      userExists: {
+        text1: 'Diese Email-Adresse wurde bereits bei uns registriert.'
+          + ' Bitte benutzen Sie eine andere Adresse. Falls'
+          + ' Sie ihr Passwort vergessen haben sollten können Sie es',
+        link: 'hier',
+        text2: 'zurücksetzen.'
+      },
+      mailInvalid: {
+        title: 'Email-Adresse ungültig',
+        text: 'Ihre Email-Adresse scheint ungültig zu sein. Bitte überprüfen'
+          + ' Sie, ob Sie sie richtig eingegeben haben.'
+      }
+    },
+    login: {
+      h1: '1. Einloggen',
+      signup: 'Jetzt registrieren',
+      authWrong: {
+        title: 'Ungültige Zugangsdaten',
+        text: 'Ihr Passwort oder ihr Nutzername war nicht korrekt.'
+      },
+      pwForgotten: 'Passwort vergessen?'
+    },
+    pwForgotten: {
+      h1: 'Passwort vergessen',
+      done: 'Keine Sorge, wir haben Ihnen eine Email gesendet. Bitte folgen Sie'
+        + ' den Instruktionen in der Email um ein neues Passwort zu vergeben.'
+    },
+    resetPw: {
+      h1: 'Passwort zurück setzen',
+      noToken: 'Da ist etwas schiefgegangen... Der Link den Sie verwendet haben'
+        + ' ist kein gültiger Link um ein Passwort zurückzusetzen. Bitte'
+        + ' überprüfen Sie, ob Sie ihn richtig eingegeben haben oder'
+        + ' kontaktieren Sie unseren den Kundenservice.',
+      instructions: 'Bitte neues Passwort eingeben:',
+      done: 'Ihr Passwort wurde erfolgreich geändert! Sie können sich mit ihrem'
+        + ' neuen Passwort jetzt wieder anmelden.'
+    }
+  }
+};

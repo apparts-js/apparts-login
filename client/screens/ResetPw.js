@@ -150,7 +150,6 @@ ResetPw = connect(
 
 navigation.registerScreen('Apparts.ResetPw', {
   clazz: ResetPw,
-  title: (store) => lang[store.global.lang]["apparts-login"].resetPw.h1,
   navigatorStyle: navigation.navigatorStyleNoStatus
 });
 

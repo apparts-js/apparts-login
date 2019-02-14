@@ -7,6 +7,7 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 export const STORE_TOKEN_AND_ID = 'STORE_TOKEN_AND_ID';
 export const STORE_EMAIL = 'STORE_EMAIL';
 export const STORE_NAME = 'STORE_NAME';
+export const SET_LANGUAGE = 'SET_LANGUAGE';
 
 export let logout = () => ({
   type: 'USER_LOGOUT'
@@ -24,4 +25,8 @@ export let storeEmail = (email) => ({
 
 export let storeName = (name) => ({
   type: STORE_NAME, name
+});
+
+export let setLanguage = (lang) => ({
+  type: SET_LANGUAGE, lang
 });
