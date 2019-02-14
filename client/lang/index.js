@@ -90,9 +90,9 @@ export const de = {
       userExists: {
         text1: 'Diese Email-Adresse wurde bereits bei uns registriert.'
           + ' Bitte benutzen Sie eine andere Adresse. Falls'
-          + ' Sie ihr Passwort vergessen haben sollten können Sie es',
+          + ' Sie ihr Passwort vergessen haben sollten können Sie es ',
         link: 'hier',
-        text2: 'zurücksetzen.'
+        text2: ' zurücksetzen.'
       },
       mailInvalid: {
         title: 'Email-Adresse ungültig',
