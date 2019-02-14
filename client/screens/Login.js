@@ -119,7 +119,13 @@ class Login extends Screen {
         })
         .then(x => {
           this.props.storeName(x.name);
-          this.resetTo(LoginConf.screenAfterLogin);
+          if(this.props.navProps && this.props.navProps.redirectTo){
+            this.resetTo(this.props.navProps.redirectTo,
+                         JSON.parse(this.props.navProps.withProps || {}));
+          } else {
+            this.resetTo(LoginConf.screenAfterLogin);
+          }
+
         })
         .catch(x => {
           if(x.status === 401){
