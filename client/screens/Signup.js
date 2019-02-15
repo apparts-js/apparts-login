@@ -136,14 +136,12 @@ class SignupWrapper extends Screen {
                           && message && message.password === "expected password") {
                   this.setState({ disabled: false, validPw: false });
                 } else {
-                  handleApiError({}, () => this.setState({disabled: false}));
+                  handleApiError({}, () => this.setState({disabled: false}))(x);
                 }
               })
-              .catch(() => {
-                handleApiError({}, () => this.setState({disabled: false}));
-              });
+              .catch(handleApiError({}, () => this.setState({disabled: false})));
           } else {
-            handleApiError({}, () => this.setState({disabled: false}));
+            handleApiError({}, () => this.setState({disabled: false}))(x);
           }
         });
     }
