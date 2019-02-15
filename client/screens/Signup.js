@@ -32,12 +32,16 @@ const styles = StyleSheet.create({
 class Signup extends Component {
   render() {
     const { lang, language, name, mail, pw,
-            validMail, validName, validPw, mailTaken,
+            validMail, validName, validPw, mailTaken, nameTaken,
             validateMail, validateName, validatePw,
             onChangeMail, onChangeName, onChangePw,
             submit, disabled, onLogin, onPwForgotten } = this.props;
     let mailError = !mailTaken ? lang.account.mailError : {
       ...lang.signup.userExists,
+      onPress: onPwForgotten
+    };
+    let nameError = !nameTaken ? lang.account.nameError : {
+      ...lang.signup.nicknameTaken,
       onPress: onPwForgotten
     };
 
@@ -62,7 +66,7 @@ class Signup extends Component {
                      placeholder={lang.account.name}
                      autoCorrect={false}
                      value={name}
-                     error={lang.account.nameError}
+                     error={nameError}
                      next={() => this._input3}
                      ref={input => this._input2 = input}
                      onChangeText={onChangeName}/>
@@ -125,6 +129,8 @@ class SignupWrapper extends Screen {
               .then(({ error, message }) => {
                 if(error === "Username taken"){
                   this.setState({ disabled: false, mailTaken: true });
+                } else if(error === "Nickname taken"){
+                  this.setState({ disabled: false, nameTaken: true });
                 } else if(error === "Fieldmissmatch"
                           && message && message.email === "expected email") {
                   this.setState({ disabled: false, validMail: false });
@@ -173,6 +179,7 @@ class SignupWrapper extends Screen {
         validName={state.validName}
         validPw={state.validPw}
         mailTaken={state.mailTaken}
+        nameTaken={state.nameTaken}
         validateMail={this.validateMail.bind(this)}
         validateName={this.validateName.bind(this)}
         validatePw={this.validatePw.bind(this)}
