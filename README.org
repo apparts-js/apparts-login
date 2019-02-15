@@ -23,15 +23,21 @@ This component provides the screens
 
 ** Configuration
 
-The configuration options for this component have to be stored
-accessible by the =apparts-config=-module through the name =login=.
-They are:
+Under the configuration name =login= the following options exist:
 - ~screenAfterLogin {string}~ :: The screen to maneuver to after
      successful login
 - ~screenAfterSignup {string}~ :: The screen to maneuver to after
      successful signup
 - ~nameLengthMin {int}~ :: The minimum length for the username
 - ~pwLengthMin {int}~ :: The minimum length for the password
+
+Under the configuration name =lang= the following options exist:
+- ~supportedLangs {[[string]]}~ :: Array with the possible languages
+     to choose from. The option has to be formatted like follows:
+     ~[['eng', 'US', 'English'], ['de', 'DE', 'Deutsch']]~ for the
+     languages with display texts =German= and =English=, using the
+     German and US American flags (=DE=, =US=) and referencing
+     language-objects with names =de= and =eng=.
 
 For using the =apparts-config= module with react native it is
 necessary to use the =babel-plugin-module-resolver= module in order to

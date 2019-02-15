@@ -1,6 +1,6 @@
 {
   "name": "apparts-login",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Login and Signup for Web, Apps, Server",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "apparts-config": "git+ssh://git@ph-uhl.com:Apparts/apparts-config#semver:^1.0.0",
-    "apparts-frontend-api": "git+ssh://git@ph-uhl.com:Apparts/apparts-frontend-api.git#semver:^1.0.0",
+    "apparts-frontend-api": "git+ssh://git@ph-uhl.com:Apparts/apparts-frontend-api.git#semver:^2.0.0",
     "apparts-react-native-components": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-native-components.git#semver:^1.0.0",
     "apparts-react-navigation": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-navigation.git#semver:^1.0.0",
     "apparts-redux": "git+ssh://git@ph-uhl.com:Apparts/apparts-redux.git#semver:^1.0.0",
