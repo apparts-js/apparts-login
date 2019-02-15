@@ -40,10 +40,8 @@ class Signup extends Component {
       ...lang.signup.userExists,
       onPress: onPwForgotten
     };
-    let nameError = !nameTaken ? lang.account.nameError : {
-      ...lang.signup.nicknameTaken,
-      onPress: onPwForgotten
-    };
+    let nameError = !nameTaken ? lang.account.nameError
+        : lang.signup.nicknameTaken;
 
     return (
         <MyScrollView>
@@ -61,7 +59,7 @@ class Signup extends Component {
                      error={mailError}
                      next={() => this._input2}
                      onChangeText={onChangeMail}/>
-            <MyInput valid={validName}
+            <MyInput valid={validName && !nameTaken}
                      validate={validateName}
                      placeholder={lang.account.name}
                      autoCorrect={false}
@@ -159,7 +157,7 @@ class SignupWrapper extends Screen {
 
   validateName(value=""){
     const res = checkName(value);
-    this.setState({validName: res });
+    this.setState({validName: res, nameTaken: false });
     return res;
   }
 

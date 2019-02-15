@@ -31,6 +31,7 @@ export const eng = {
         link: 'here',
         text2: '.'
       },
+      nicknameTaken: 'This name is taken, please use a different name.',
       mailInvalid: {
         title: 'Email wrong',
         text: 'Your email address appears to be invalid. Please check it'
@@ -94,6 +95,8 @@ export const de = {
         link: 'hier',
         text2: ' zurücksetzen.'
       },
+      nicknameTaken: 'Unter diesem Namen ist bereits jemand registriert, bitte'
+      + ' wählen Sie einen anderen Namen.',
       mailInvalid: {
         title: 'Email-Adresse ungültig',
         text: 'Ihre Email-Adresse scheint ungültig zu sein. Bitte überprüfen'
