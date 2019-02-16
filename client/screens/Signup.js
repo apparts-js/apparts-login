@@ -114,7 +114,8 @@ class SignupWrapper extends Screen {
 
     if(mailValid && nameValid && pwValid){
       this.setState({disabled: true});
-      post('user', {email: mail, password: pw, name: name}, false)
+      post('user', {email: mail, password: pw, name: name,
+                    lang: this.props.global.lang}, false)
         .then(x => {
           this.props.storeEmail(mail);
           this.props.storeName(name);

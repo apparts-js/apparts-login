@@ -119,6 +119,7 @@ class Login extends Screen {
         })
         .then(x => {
           this.props.storeName(x.name);
+          this.props.setLanguage(x.language);
           if(this.props.navProps && this.props.navProps.redirectTo){
             this.resetTo(this.props.navProps.redirectTo,
                          JSON.parse(this.props.navProps.withProps || {}));
