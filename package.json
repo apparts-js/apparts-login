@@ -4,9 +4,8 @@
   "description": "Login and Signup for Web, Apps, Server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node ./server/app.js",
-    "setupDB": "node ./server/scripts/setup.js"
+    "test": "react-scripts test",
+    "testRun": "react-scripts start"
   },
   "repository": {
     "type": "git",
@@ -25,15 +24,44 @@
   "author": "Philipp Uhl",
   "license": "UNLICENSED",
   "dependencies": {
-    "apparts-react-native-components": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-native-components.git#semver:^1.0.0",
-    "apparts-react-navigation": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-navigation.git#semver:^1.0.0",
-    "base-64": "^0.1.0",
-    "react": "^16.8.2",
-    "react-native": "^0.58.4"
+    "@apparts/api": "^3.1.1",
+    "@apparts/config": "^1.0.5",
+    "formik": "^2.2.6",
+    "react": "^17.0.1",
+    "yup": "^0.32.9"
   },
-  "peerDependencies": {
-    "apparts-redux": "git+ssh://git@ph-uhl.com:Apparts/apparts-redux.git#semver:^1.0.0",
-    "apparts-config": "git+ssh://git@ph-uhl.com:Apparts/apparts-config#semver:^1.0.0",
-    "apparts-frontend-api": "git+ssh://git@ph-uhl.com:Apparts/apparts-frontend-api.git#semver:^2.0.0"
+  "devDependencies": {
+    "@apparts/redux": "2.0.1",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.8.3",
+    "eslint": "^7.21.0",
+    "jsonwebtoken": "^8.5.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-scripts": "^4.0.3",
+    "web-vitals": "^1.0.1"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@apparts/redux)/)"
+    ],
+    "watchPathIgnorePatterns": [
+      "/\\.#.*",
+      "/.*~",
+      "/#.*#"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
