@@ -4,3 +4,4 @@ export { default as useResetPassword } from "./src/components/ResetPw";
 export { default as useRequestPwReset } from "./src/components/RequestPwReset";
 
 export * as strings from "./src/lang/index";
+export * as userStore from "./src/redux/user/index";

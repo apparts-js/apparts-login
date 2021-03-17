@@ -161,6 +161,51 @@ var logout = function logout() {
     type: "USER_LOGOUT"
   };
 };
+var setLanguage = function setLanguage(lang) {
+  return {
+    type: "SET_LANGUAGE",
+    lang: lang
+  };
+};
+
+var reducer = function reducer(types) {
+  return function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    switch (action.type) {
+      case types.USER_LOGIN.name:
+        return _objectSpread2({}, action.user);
+
+      case types.USER_LOGOUT.name:
+        return {};
+
+      case types.SET_LANGUAGE.name:
+        return _objectSpread2(_objectSpread2({}, state), {}, {
+          lang: action.lang
+        });
+
+      default:
+        return state;
+    }
+  };
+};
+
+var actionNames = [logout().type, login().type, setLanguage().type];
+var index = {
+  reducer: reducer,
+  actionNames: actionNames,
+  login: login,
+  logout: logout
+};
+
+var index$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  login: login,
+  logout: logout,
+  setLanguage: setLanguage,
+  'default': index
+});
 
 var en = {
   account: {
@@ -886,4 +931,5 @@ exports.useLogin = useLogin;
 exports.useRequestPwReset = useRequestPwReset;
 exports.useResetPassword = useResetPassword;
 exports.useSignup = useSignup;
+exports.userStore = index$1;
 //# sourceMappingURL=index.js.map
