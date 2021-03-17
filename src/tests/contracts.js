@@ -45,7 +45,11 @@ const persistContract = (testName) => {
   } catch (e) {}
   fs.writeFileSync(
     "./apiContract.json",
-    JSON.stringify({ ...apiContract, [testName]: contracts }, undefined, 2)
+    JSON.stringify(
+      { ...apiContract, [testName]: contracts[testName] },
+      undefined,
+      2
+    )
   );
 };
 

@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as Yup from "yup";
-import { login, logout } from "../redux/user";
+import { login, logout } from "../redux/user/index";
 import { Formik, Form } from "formik";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as defComponents from "./defaultComponents";
-import * as defLanguages from "../lang";
+import * as defLanguages from "../lang/index";
 
 const useLogin = ({
-  components: { InputField, SubmitButton, Link, ErrorMessage } = defComponents,
+  components: { FormikInput: InputField, Button, Link, ErrorMessage },
   strings: languages = defLanguages,
   api: { get },
 }) => {
   const Login = ({
-    containerStlye,
+    containerStyle,
     onLogin = () => {},
     onLogout = () => {},
     login,
@@ -46,7 +45,7 @@ const useLogin = ({
       if (email && password) {
         setWrong(false);
         setLoading(true);
-        const req = get("login")
+        const req = get("user/login")
           .authPW(email, password)
           .on(400, () => {})
           .on(401, () => {});
@@ -80,18 +79,20 @@ const useLogin = ({
         })}
         onSubmit={onSubmit}
       >
-        <Form style={containerStlye}>
+        <Form style={containerStyle} className="login">
           <InputField label={strings.account.mail} name="email" type="email" />
           <InputField
             label={strings.account.password}
             name="password"
             type="password"
           />
-          <div>
-            <SubmitButton loading={loading}>{strings.login.login}</SubmitButton>
+          <div className="submit">
+            <Button submit loading={loading}>
+              {strings.login.login}
+            </Button>
             {wrong && <ErrorMessage message={strings.login.authWrong} />}
           </div>
-          <div>
+          <div className="pwForgotten">
             <Link to={pwForgottenUrl}>{strings.login.pwForgotten}</Link>
           </div>
         </Form>
@@ -100,7 +101,7 @@ const useLogin = ({
   };
   Login.propTypes = {
     lang: PropTypes.string,
-    containerStlye: PropTypes.object,
+    containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
     onLogin: PropTypes.func,
     onLogout: PropTypes.func,
@@ -114,7 +115,7 @@ const useLogin = ({
 
   return useCallback(
     connect(({ user }) => ({ user }), { login, logout })(Login),
-    [InputField, SubmitButton, Link, ErrorMessage, get, languages]
+    [InputField, Button, Link, ErrorMessage, get, languages]
   );
 };
 

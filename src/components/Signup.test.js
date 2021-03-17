@@ -13,14 +13,12 @@ const postApiMock = _postApiMock(testName);
 import axios from "axios";
 import * as Yup from "yup";
 import { InputField } from "./defaultComponents";
-
-import { sign as JWT } from "jsonwebtoken";
-const JWTSECRET = "orietn093risent";
+import * as components from "@apparts/web-components";
 
 jest.mock("axios");
 
 const MySignup = (params) => {
-  const Signup = useSignup({ api });
+  const Signup = useSignup({ api, components });
   return withStore(<Signup {...params} />);
 };
 

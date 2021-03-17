@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import useLogin from "./Login";
@@ -8,14 +9,21 @@ import { persistContract, getApiMock as _getApiMock } from "../tests/contracts";
 const testName = "login";
 const getApiMock = _getApiMock(testName);
 import axios from "axios";
+import * as components from "@apparts/web-components";
 
 import { sign as JWT } from "jsonwebtoken";
-const JWTSECRET = "orietn093risent";
+const JWTSECRET = "<change me>";
 
 jest.mock("axios");
 
+const Link = ({ to, children }) => <a href={to}>{children}</a>;
+Link.propTypes = {
+  to: PropTypes.string.isRequired,
+  children: PropTypes.node,
+};
+
 const MyLogin = (params) => {
-  const Login = useLogin({ api });
+  const Login = useLogin({ api, components: { ...components, Link } });
   return withStore(<Login {...params} />);
 };
 
@@ -124,14 +132,14 @@ describe("Login input validation", () => {
 
 describe("Log in", () => {
   test("Should submit and throw error on wrong credetials", async () => {
-    getApiMock(400, { error: "Not authorized" });
+    getApiMock(401, { error: "Unauthorized" });
     render(<MyLogin />);
     const email = screen.getByLabelText("Email");
     const password = screen.getByLabelText("Password");
     const button = screen.getByRole("button", { name: "Log in" });
     await userEvent.type(email, "test@web.de");
     await waitFor(() => userEvent.tab());
-    await userEvent.type(password, "123456576");
+    await userEvent.type(password, "nope,Wrong");
     await waitFor(() => userEvent.tab());
     expect(
       screen.queryByText("Please enter your password.")
@@ -146,22 +154,28 @@ describe("Log in", () => {
     expect(button).toBeEnabled();
   });
   test("Should use specified api version", async () => {
-    getApiMock(400, { error: "Not authorized" });
+    getApiMock(401, { error: "Unauthorized" });
     render(<MyLogin apiVersion={2} />);
     const email = screen.getByLabelText("Email");
     const password = screen.getByLabelText("Password");
     await userEvent.type(email, "test@web.de");
-    await userEvent.type(password, "123456576");
+    await userEvent.type(password, "nope,Wrong");
     const button = screen.getByRole("button", { name: "Log in" });
     await waitFor(() => userEvent.click(button));
-    expect(axios.get.mock.calls[0][0]).toBe("http://localhost:3000/v/2/login?");
+    expect(axios.get.mock.calls[0][0]).toBe(
+      "http://localhost:3000/v/2/user/login?"
+    );
   });
   test("Should log in successfully", async () => {
-    const jwt = JWT({ action: "login", id: 2 }, JWTSECRET);
+    const jwt = JWT(
+      { id: 3, action: "login", email: "test@gmail.com" },
+      JWTSECRET,
+      { expiresIn: "10 minutes" }
+    );
 
     getApiMock(200, {
-      id: 2,
-      loginToken: "aroiet309lrstioen",
+      id: 3,
+      loginToken: "dG9rZW4=",
       apiToken: jwt,
     });
     const onLogin = jest.fn();
@@ -169,21 +183,21 @@ describe("Log in", () => {
     const email = screen.getByLabelText("Email");
     const password = screen.getByLabelText("Password");
     const button = screen.getByRole("button", { name: "Log in" });
-    await userEvent.type(email, "test@web.de");
+    await userEvent.type(email, "test@gmail.com");
     await userEvent.type(password, "123456576");
     userEvent.click(button);
     await waitFor(() => expect(button).toBeDisabled());
     await waitFor(() => expect(button).toBeEnabled());
     const { user } = store.getState();
     expect(user).toMatchObject({
-      id: 2,
-      loginToken: "aroiet309lrstioen",
+      id: 3,
+      loginToken: "dG9rZW4=",
       apiToken: jwt,
     });
     expect(onLogin.mock.calls.length).toBe(1);
     expect(onLogin.mock.calls[0][0]).toMatchObject({
-      id: 2,
-      loginToken: "aroiet309lrstioen",
+      id: 3,
+      loginToken: "dG9rZW4=",
       apiToken: jwt,
     });
   });

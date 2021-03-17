@@ -1,9 +1,6 @@
-import { Login } from './client/screens/Signup';
-import { Signup } from './client/screens/Login';
-import { PwForgotten } from './client/screens/PwForgotten';
-import { PwForgottenDone } from './client/screens/PwForgottenDone';
-import { ResetPw } from './client/screens/ResetPw';
-import { ResetPwDone } from './client/screens/ResetPwDone';
-import * as lang from './client/lang';
+export { default as useLogin } from "./src/components/Login";
+export { default as useSignup } from "./src/components/Signup";
+export { default as useResetPassword } from "./src/components/ResetPw";
+export { default as useRequestPwReset } from "./src/components/RequestPwReset";
 
-export { Login, Signup, PwForgotten, ResetPw, lang };
+export * as strings from "./src/lang/index";

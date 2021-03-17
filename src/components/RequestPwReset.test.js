@@ -11,11 +11,12 @@ import {
 const testName = "requestPwReset";
 const postApiMock = _postApiMock(testName);
 import axios from "axios";
+import * as components from "@apparts/web-components";
 
 jest.mock("axios");
 
 const MyPwReset = (params) => {
-  const PwReset = useRequestPwReset({ api });
+  const PwReset = useRequestPwReset({ api, components });
   return withStore(<PwReset {...params} />);
 };
 
@@ -88,7 +89,7 @@ describe("Reset Pw", () => {
     render(<MyPwReset onRequestPwReset={onReset} />);
     const email = screen.getByLabelText("Email");
     const button = screen.getByRole("button", { name: "Reset password" });
-    await userEvent.type(email, "test@web.de");
+    await userEvent.type(email, "test100@web.de");
     await waitFor(() => userEvent.click(button));
     await waitFor(() =>
       screen.getByText(
@@ -99,14 +100,14 @@ describe("Reset Pw", () => {
     expect(onReset.mock.calls.length).toBe(0);
   });
   test("Should use specified api version", async () => {
-    postApiMock(400, { error: "User not found" });
+    postApiMock(404, { error: "User not found" });
     render(<MyPwReset apiVersion={2} />);
     const email = screen.getByLabelText("Email");
-    await userEvent.type(email, "test@web.de");
+    await userEvent.type(email, "test100@web.de");
     const button = screen.getByRole("button", { name: "Reset password" });
     await waitFor(() => userEvent.click(button));
     expect(axios.post.mock.calls[0][0]).toBe(
-      "http://localhost:3000/v/2/user/test%40web.de/reset?"
+      "http://localhost:3000/v/2/user/test100%40web.de/reset?"
     );
   });
   test("Should reset successfully", async () => {

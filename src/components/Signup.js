@@ -3,16 +3,15 @@ import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as defComponents from "./defaultComponents";
-import * as defLanguages from "../lang";
+import * as defLanguages from "../lang/index";
 
 const useSignup = ({
-  components: { InputField, SubmitButton, Link, ErrorMessage } = defComponents,
+  components: { FormikInput: InputField, Button, Link, ErrorMessage },
   strings: languages = defLanguages,
   api: { post },
 }) => {
   const Signup = ({
-    containerStlye,
+    containerStyle,
     onSignup = () => {},
     apiVersion,
     user,
@@ -72,14 +71,14 @@ const useSignup = ({
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        <Form style={containerStlye}>
+        <Form style={containerStyle}>
           {firstFields}
           <InputField label={strings.account.mail} name="email" type="email" />
           {lastFields}
           <div>
-            <SubmitButton loading={loading}>
+            <Button submit loading={loading}>
               {strings.signup.signup}
-            </SubmitButton>
+            </Button>
             {userExists && <ErrorMessage message={strings.signup.userExists} />}
           </div>
         </Form>
@@ -88,7 +87,7 @@ const useSignup = ({
   };
   Signup.propTypes = {
     lang: PropTypes.string,
-    containerStlye: PropTypes.object,
+    containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
     onSignup: PropTypes.func,
     user: PropTypes.object,
@@ -103,7 +102,7 @@ const useSignup = ({
 
   return useCallback(connect(({ user }) => ({ user }), {})(Signup), [
     InputField,
-    SubmitButton,
+    Button,
     Link,
     ErrorMessage,
     post,

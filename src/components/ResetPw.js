@@ -1,25 +1,18 @@
 import React, { useState, useCallback } from "react";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { login } from "../redux/user";
+import { login } from "../redux/user/index";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as defComponents from "./defaultComponents";
-import * as defLanguages from "../lang";
+import * as defLanguages from "../lang/index";
 
 const useResetPassword = ({
-  components: {
-    InputField,
-    SubmitButton,
-    Button,
-    Link,
-    ErrorMessage,
-  } = defComponents,
+  components: { FormikInput: InputField, Button, Link, ErrorMessage },
   strings: languages = defLanguages,
   api: { put },
 }) => {
   const ResetPassword = ({
-    containerStlye,
+    containerStyle,
     onResetPassword = () => {},
     validatePassword = (pw) => !pw || pw.length >= 6,
     email,
@@ -49,6 +42,9 @@ const useResetPassword = ({
         const req = put("user")
           .authPW(email, token)
           .data({ password })
+          .on({ status: 401, error: "User not found" }, () => {
+            setTokenWrong(true);
+          })
           .on({ status: 400, error: "Authorization wrong" }, () => {
             setTokenWrong(true);
           });
@@ -93,7 +89,7 @@ const useResetPassword = ({
         })}
         onSubmit={onSubmit}
       >
-        <Form style={containerStlye}>
+        <Form style={containerStyle}>
           <div>{resetStrings.instructions}</div>
           <InputField
             label={strings.account.password}
@@ -101,9 +97,9 @@ const useResetPassword = ({
             type="password"
           />
           <div>
-            <SubmitButton loading={loading}>
+            <Button submit loading={loading}>
               {resetStrings.resetPassword}
-            </SubmitButton>
+            </Button>
             {tokenWrong && <ErrorMessage message={resetStrings.noToken} />}
           </div>
         </Form>
@@ -114,7 +110,7 @@ const useResetPassword = ({
     email: PropTypes.string,
     token: PropTypes.string,
     lang: PropTypes.string,
-    containerStlye: PropTypes.object,
+    containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
     login: PropTypes.func,
     onDone: PropTypes.func,
@@ -127,7 +123,7 @@ const useResetPassword = ({
 
   return useCallback(
     connect(({ user }) => ({ user }), { login })(ResetPassword),
-    [InputField, SubmitButton, Button, Link, ErrorMessage, put, languages]
+    [InputField, Button, Button, Link, ErrorMessage, put, languages]
   );
 };
 

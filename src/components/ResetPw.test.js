@@ -8,13 +8,14 @@ import { persistContract, putApiMock as _putApiMock } from "../tests/contracts";
 const testName = "resetPw";
 const putApiMock = _putApiMock(testName);
 import axios from "axios";
+import * as components from "@apparts/web-components";
 import { sign as JWT } from "jsonwebtoken";
-const JWTSECRET = "orietn093risent";
+const JWTSECRET = "<change me>";
 
 jest.mock("axios");
 
 const MyPwReset = (params) => {
-  const PwReset = useResetPassword({ api });
+  const PwReset = useResetPassword({ api, components });
   return withStore(<PwReset {...params} />);
 };
 
@@ -86,7 +87,7 @@ describe("ResetPw input validation", () => {
 
 describe("Reset Pw", () => {
   test("Should submit and throw error on missing token", async () => {
-    putApiMock(400, { error: "Authorization wrong" });
+    putApiMock(400, { error: "User not found" });
     const onReset = jest.fn();
     render(<MyPwReset onResetPassword={onReset} />);
     const password = screen.getByLabelText("Password");
@@ -113,7 +114,7 @@ describe("Reset Pw", () => {
     expect(onReset.mock.calls.length).toBe(0);
   });
   test("Should submit and throw error on invalid token", async () => {
-    putApiMock(400, { error: "Authorization wrong" });
+    putApiMock(401, { error: "User not found" });
     const onReset = jest.fn();
     render(<MyPwReset token="abc" email="abc" onResetPassword={onReset} />);
     const password = screen.getByLabelText("Password");
@@ -133,7 +134,7 @@ describe("Reset Pw", () => {
     expect(axios.put.mock.calls.length).toBe(1);
   });
   test("Should use specified api version", async () => {
-    putApiMock(400, { error: "Authorization wrong" });
+    putApiMock(401, { error: "User not found" });
     render(<MyPwReset email="test" token="abc" apiVersion={2} />);
     const password = screen.getByLabelText("Password");
     await userEvent.type(password, "test@web.de");
@@ -142,17 +143,21 @@ describe("Reset Pw", () => {
     expect(axios.put.mock.calls[0][0]).toBe("http://localhost:3000/v/2/user?");
   });
   test("Should reset successfully", async () => {
-    const jwt = JWT({ action: "login", id: 2 }, JWTSECRET);
+    const jwt = JWT(
+      { id: 2, action: "login", email: "test@test.de" },
+      JWTSECRET,
+      { expiresIn: "10 minutes" }
+    );
     putApiMock(200, {
       id: 2,
-      loginToken: "aroiet309lrstioen",
+      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
       apiToken: jwt,
     });
     const onResetPw = jest.fn();
     render(
       <MyPwReset
         email="test@test.de"
-        token="abcABC"
+        token="cmVzZXQ="
         onResetPassword={onResetPw}
       />
     );
@@ -165,13 +170,13 @@ describe("Reset Pw", () => {
     const { user } = store.getState();
     expect(user).toMatchObject({
       id: 2,
-      loginToken: "aroiet309lrstioen",
+      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
       apiToken: jwt,
     });
     expect(onResetPw.mock.calls.length).toBe(1);
     expect(onResetPw.mock.calls[0][0]).toMatchObject({
       id: 2,
-      loginToken: "aroiet309lrstioen",
+      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
       apiToken: jwt,
     });
   });

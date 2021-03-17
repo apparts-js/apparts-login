@@ -3,16 +3,15 @@ import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as defComponents from "./defaultComponents";
-import * as defLanguages from "../lang";
+import * as defLanguages from "../lang/index";
 
 const useRequestPwReset = ({
-  components: { InputField, SubmitButton, ErrorMessage } = defComponents,
+  components: { FormikInput: InputField, Button, ErrorMessage },
   strings: languages = defLanguages,
   api: { post },
 }) => {
   const RequestPwReset = ({
-    containerStlye,
+    containerStyle,
     onRequestPwReset = () => {},
     apiVersion,
     user,
@@ -58,12 +57,12 @@ const useRequestPwReset = ({
         })}
         onSubmit={onSubmit}
       >
-        <Form style={containerStlye}>
+        <Form style={containerStyle}>
           <InputField label={strings.account.mail} name="email" type="email" />
           <div>
-            <SubmitButton loading={loading}>
+            <Button submit loading={loading}>
               {strings.pwForgotten.requestPwReset}
-            </SubmitButton>
+            </Button>
             {emailUnknown && (
               <ErrorMessage message={strings.pwForgotten.unknownEmail} />
             )}
@@ -74,7 +73,7 @@ const useRequestPwReset = ({
   };
   RequestPwReset.propTypes = {
     lang: PropTypes.string,
-    containerStlye: PropTypes.object,
+    containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
     onRequestPwReset: PropTypes.func,
     user: PropTypes.object,
@@ -83,7 +82,7 @@ const useRequestPwReset = ({
 
   return useCallback(connect(({ user }) => ({ user }), {})(RequestPwReset), [
     InputField,
-    SubmitButton,
+    Button,
     ErrorMessage,
     post,
     languages,

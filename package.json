@@ -1,12 +1,17 @@
 {
-  "name": "apparts-login",
-  "version": "2.1.1",
+  "name": "@apparts/login",
+  "version": "3.0.0",
   "description": "Login and Signup for Web, Apps, Server",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "react-scripts test",
-    "testRun": "react-scripts start"
+    "testRun": "react-scripts start",
+    "build": "rollup -c",
+    "buildWatch": "rollup -c -w"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git@ph-uhl.com:Apparts/apparts-login.git"
@@ -27,25 +32,26 @@
     "@apparts/api": "^3.1.1",
     "@apparts/config": "^1.0.5",
     "formik": "^2.2.6",
-    "react": "^17.0.1",
+    "prop-types": "^15.7.2",
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@apparts/redux": "2.0.1",
+    "@apparts/redux": "2.0.2",
+    "@apparts/web-components": "^1.0.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.8.3",
     "eslint": "^7.21.0",
     "jsonwebtoken": "^8.5.1",
-    "react-dom": "^17.0.1",
-    "react-redux": "^7.2.2",
     "react-scripts": "^4.0.3",
     "web-vitals": "^1.0.1"
   },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2"
+  },
   "jest": {
-    "transformIgnorePatterns": [
-      "node_modules/(?!(@apparts/redux)/)"
-    ],
     "watchPathIgnorePatterns": [
       "/\\.#.*",
       "/.*~",

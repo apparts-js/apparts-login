@@ -2,13 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, ErrorMessage as FErrorMessage } from "formik";
 
-const ErrorMessage = ({ message }) => message && <div>{message}</div>;
+const ErrorMessage = ({ message }) =>
+  message && <div className="errorMessage">{message}</div>;
 ErrorMessage.propTypes = {
   message: PropTypes.string,
 };
 
 const InputField = ({ label, name, ...props }) => (
-  <div>
+  <div className="inputField">
     <label htmlFor={name}>{label}</label>
     <Field {...props} name={name} id={name} />
     <FErrorMessage
@@ -23,7 +24,14 @@ InputField.propTypes = {
 };
 
 const SubmitButton = ({ loading, disabled, ...props }) => {
-  return <button type="submit" {...props} disabled={loading || disabled} />;
+  return (
+    <button
+      className={(loading ? "loading " : "") + "submit button"}
+      type="submit"
+      {...props}
+      disabled={loading || disabled}
+    />
+  );
 };
 SubmitButton.propTypes = {
   loading: PropTypes.bool,
@@ -31,7 +39,13 @@ SubmitButton.propTypes = {
 };
 
 const Button = ({ loading, disabled, ...props }) => {
-  return <button {...props} disabled={loading || disabled} />;
+  return (
+    <button
+      className={(loading ? "loading " : "") + "button"}
+      {...props}
+      disabled={loading || disabled}
+    />
+  );
 };
 Button.propTypes = {
   loading: PropTypes.bool,
