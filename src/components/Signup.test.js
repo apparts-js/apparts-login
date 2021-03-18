@@ -12,7 +12,7 @@ const testName = "signup";
 const postApiMock = _postApiMock(testName);
 import axios from "axios";
 import * as Yup from "yup";
-import { InputField } from "./defaultComponents";
+import { FormikInput as InputField } from "@apparts/web-components";
 import * as components from "@apparts/web-components";
 
 jest.mock("axios");

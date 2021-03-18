@@ -54,7 +54,10 @@
   },
   "jest": {
     "coveragePathIgnorePatterns": [
-      "/src/tests"
+      "/src/tests",
+      "/src/index.js",
+      "/src/testApi.js",
+      "/src/redux/testStore.js"
     ],
     "watchPathIgnorePatterns": [
       "/\\.#.*",
