@@ -95,17 +95,22 @@ Parameters:
   for ~lang~, the value from ~defaultLang~ will be used.
 
 
-Example:
+Example with [[https://reactrouter.com/][react-router]] as routing library:
 
 #+BEGIN_SRC js
   import React from "react";
   import { useLogin } from "@apparts/login";
   import * as components from "@apparts/web-components";
+  import { useLocation, useHistory } from "react-router-dom";
 
   // Import your configured @apparts/api here:
   import * as api from "helpers/api";
 
   const LoginScreen = () => {
+    const { search } = useLocation(),
+          logout = new URLSearchParams(search).get("logout"),
+          history = useHistory();
+
     const Login = useLogin({
       api,
       components: {
@@ -114,14 +119,17 @@ Example:
       },
     });
     return (
-        <div style={{
-          maxWidth: 600,
-          margin: "auto",
-          padding: 20,
-          marginTop: 100,
-        }}>
-          <Login pwForgottenUrl="/account/requestpwreset" />
-        </div>
+      <div style={{
+             maxWidth: 600,
+             margin: "auto",
+             padding: 20,
+             marginTop: 100,
+           }}>
+        <Login pwForgottenUrl="/requestpwreset"
+               onLogin={() => history.push("/")}
+               onLogout={() => history.push("/login")}
+        />
+      </div>
     );
   };
 
@@ -188,7 +196,8 @@ Example:
           marginTop: 100,
         }}
       >
-        <Signup />
+        <Signup
+        onSignup={() => {/* navigate somewhere */}}/>
       </div>
     );
   };

@@ -1,4 +1,56 @@
 {
+  "login": [
+    {
+      "context": "get",
+      "status": 401,
+      "returns": {
+        "error": "Unauthorized"
+      },
+      "params": [
+        "http://localhost:3000/v/1/user/login?",
+        {
+          "auth": {
+            "username": "test@web.de",
+            "password": "nope,Wrong"
+          }
+        }
+      ]
+    },
+    {
+      "context": "get",
+      "status": 401,
+      "returns": {
+        "error": "Unauthorized"
+      },
+      "params": [
+        "http://localhost:3000/v/2/user/login?",
+        {
+          "auth": {
+            "username": "test@web.de",
+            "password": "nope,Wrong"
+          }
+        }
+      ]
+    },
+    {
+      "context": "get",
+      "status": 200,
+      "returns": {
+        "id": 3,
+        "loginToken": "dG9rZW4=",
+        "apiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNTc1MTU4NDAwLCJleHAiOjE1NzUxNTkwMDB9.v38UB00Q-o5BYOZuszpCNvhfPna6bMhqWHDJP--Oh1A"
+      },
+      "params": [
+        "http://localhost:3000/v/1/user/login?",
+        {
+          "auth": {
+            "username": "test@gmail.com",
+            "password": "123456576"
+          }
+        }
+      ]
+    }
+  ],
   "resetPw": [
     {
       "context": "put",
@@ -100,94 +152,6 @@
       ]
     }
   ],
-  "login": [
-    {
-      "context": "get",
-      "status": 401,
-      "returns": {
-        "error": "Unauthorized"
-      },
-      "params": [
-        "http://localhost:3000/v/1/user/login?",
-        {
-          "auth": {
-            "username": "test@web.de",
-            "password": "nope,Wrong"
-          }
-        }
-      ]
-    },
-    {
-      "context": "get",
-      "status": 401,
-      "returns": {
-        "error": "Unauthorized"
-      },
-      "params": [
-        "http://localhost:3000/v/2/user/login?",
-        {
-          "auth": {
-            "username": "test@web.de",
-            "password": "nope,Wrong"
-          }
-        }
-      ]
-    },
-    {
-      "context": "get",
-      "status": 200,
-      "returns": {
-        "id": 3,
-        "loginToken": "dG9rZW4=",
-        "apiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNTc1MTU4NDAwLCJleHAiOjE1NzUxNTkwMDB9.v38UB00Q-o5BYOZuszpCNvhfPna6bMhqWHDJP--Oh1A"
-      },
-      "params": [
-        "http://localhost:3000/v/1/user/login?",
-        {
-          "auth": {
-            "username": "test@gmail.com",
-            "password": "123456576"
-          }
-        }
-      ]
-    }
-  ],
-  "requestPwReset": [
-    {
-      "context": "post",
-      "status": 404,
-      "returns": {
-        "error": "User not found"
-      },
-      "params": [
-        "http://localhost:3000/v/1/user/test100%40web.de/reset?",
-        null,
-        {}
-      ]
-    },
-    {
-      "context": "post",
-      "status": 404,
-      "returns": {
-        "error": "User not found"
-      },
-      "params": [
-        "http://localhost:3000/v/2/user/test100%40web.de/reset?",
-        null,
-        {}
-      ]
-    },
-    {
-      "context": "post",
-      "status": 200,
-      "returns": "ok",
-      "params": [
-        "http://localhost:3000/v/1/user/test%40web.de/reset?",
-        null,
-        {}
-      ]
-    }
-  ],
   "signup": [
     {
       "context": "post",
@@ -254,6 +218,42 @@
           "after": "Yeha",
           "before": 43
         },
+        {}
+      ]
+    }
+  ],
+  "requestPwReset": [
+    {
+      "context": "post",
+      "status": 404,
+      "returns": {
+        "error": "User not found"
+      },
+      "params": [
+        "http://localhost:3000/v/1/user/test100%40web.de/reset?",
+        null,
+        {}
+      ]
+    },
+    {
+      "context": "post",
+      "status": 404,
+      "returns": {
+        "error": "User not found"
+      },
+      "params": [
+        "http://localhost:3000/v/2/user/test100%40web.de/reset?",
+        null,
+        {}
+      ]
+    },
+    {
+      "context": "post",
+      "status": 200,
+      "returns": "ok",
+      "params": [
+        "http://localhost:3000/v/1/user/test%40web.de/reset?",
+        null,
         {}
       ]
     }
