@@ -87,7 +87,6 @@ describe("ResetPw input validation", () => {
 
 describe("Reset Pw", () => {
   test("Should submit and throw error on missing token", async () => {
-    putApiMock(400, { error: "User not found" });
     const onReset = jest.fn();
     render(<MyPwReset onResetPassword={onReset} />);
     const password = screen.getByLabelText("Password");
@@ -113,10 +112,32 @@ describe("Reset Pw", () => {
     expect(button).toBeEnabled();
     expect(onReset.mock.calls.length).toBe(0);
   });
-  test("Should submit and throw error on invalid token", async () => {
+  test("Should submit and throw error on invalid user", async () => {
     putApiMock(401, { error: "User not found" });
     const onReset = jest.fn();
     render(<MyPwReset token="abc" email="abc" onResetPassword={onReset} />);
+    const password = screen.getByLabelText("Password");
+    const button = screen.getByRole("button", { name: "Set password" });
+    await userEvent.type(password, "109330-");
+    await waitFor(() => userEvent.click(button));
+    await waitFor(() =>
+      expect(
+        screen.queryByText(
+          "There must have happened some kind of error: This is not a" +
+            " proper password reset link. Please check again or contact customer" +
+            " support."
+        )
+      ).toBeInTheDocument()
+    );
+    expect(button).toBeEnabled();
+    expect(axios.put.mock.calls.length).toBe(1);
+  });
+  test("Should submit and throw error on wrong token", async () => {
+    putApiMock(401, { error: "Unauthorized" });
+    const onReset = jest.fn();
+    render(
+      <MyPwReset token="abc!" email="test@test.de" onResetPassword={onReset} />
+    );
     const password = screen.getByLabelText("Password");
     const button = screen.getByRole("button", { name: "Set password" });
     await userEvent.type(password, "109330-");
@@ -179,6 +200,49 @@ describe("Reset Pw", () => {
       loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
       apiToken: jwt,
     });
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Your password was reset successfully!")
+      ).toBeInTheDocument()
+    );
+    expect(screen.queryByLabelText("Ok")).not.toBeInTheDocument();
+  });
+  test("Should show ok button after reset", async () => {
+    const jwt = JWT(
+      { id: 4, action: "login", email: "test2@gmail.com" },
+      JWTSECRET,
+      { expiresIn: "10 minutes" }
+    );
+    putApiMock(200, {
+      id: 4,
+      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
+      apiToken: jwt,
+    });
+    const onResetPw = jest.fn();
+    const onDone = jest.fn();
+    render(
+      <MyPwReset
+        email="test2@gmail.com"
+        token="cmVzZXQ="
+        onResetPassword={onResetPw}
+        onDone={onDone}
+      />
+    );
+    const password = screen.getByLabelText("Password");
+    const button = screen.getByRole("button", { name: "Set password" });
+    await userEvent.type(password, "12345678");
+    userEvent.click(button);
+    await waitFor(() => expect(button).toBeDisabled());
+    await waitFor(() => expect(button).toBeEnabled());
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Your password was reset successfully!")
+      ).toBeInTheDocument()
+    );
+    expect(onDone.mock.calls.length).toBe(0);
+    const okButton = screen.getByRole("button", { name: "Ok" });
+    userEvent.click(okButton);
+    expect(onDone.mock.calls.length).toBe(1);
   });
 });
 

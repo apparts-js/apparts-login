@@ -23,6 +23,25 @@
       "context": "put",
       "status": 401,
       "returns": {
+        "error": "Unauthorized"
+      },
+      "params": [
+        "http://localhost:3000/v/1/user?",
+        {
+          "password": "109330-"
+        },
+        {
+          "auth": {
+            "username": "test@test.de",
+            "password": "abc!"
+          }
+        }
+      ]
+    },
+    {
+      "context": "put",
+      "status": 401,
+      "returns": {
         "error": "User not found"
       },
       "params": [
@@ -54,6 +73,27 @@
         {
           "auth": {
             "username": "test@test.de",
+            "password": "cmVzZXQ="
+          }
+        }
+      ]
+    },
+    {
+      "context": "put",
+      "status": 200,
+      "returns": {
+        "id": 4,
+        "loginToken": "YXJvaWV0MzA5bHJzdGlvZW4=",
+        "apiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsImlhdCI6MTU3NTE1ODQwMCwiZXhwIjoxNTc1MTU5MDAwfQ.nlM5r16ZfZlZGwQNvBf0QGdMfXLMyZNwyAM2yRo7Nlg"
+      },
+      "params": [
+        "http://localhost:3000/v/1/user?",
+        {
+          "password": "12345678"
+        },
+        {
+          "auth": {
+            "username": "test2@gmail.com",
             "password": "cmVzZXQ="
           }
         }

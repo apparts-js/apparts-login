@@ -91,7 +91,6 @@ const useSignup = ({
     apiVersion: PropTypes.number,
     onSignup: PropTypes.func,
     user: PropTypes.object,
-    pwForgottenUrl: PropTypes.string,
     defaulLang: PropTypes.string,
     initialValues: PropTypes.object,
     validation: PropTypes.object,

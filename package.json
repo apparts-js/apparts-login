@@ -3,6 +3,7 @@
   "version": "3.0.1",
   "description": "Login and Signup for Web, Apps, Server",
   "main": "dist/index.js",
+  "module": "index.js",
   "scripts": {
     "test": "react-scripts test",
     "testRun": "react-scripts start",
@@ -52,6 +53,9 @@
     "react-redux": "^7.2.2"
   },
   "jest": {
+    "coveragePathIgnorePatterns": [
+      "/src/tests"
+    ],
     "watchPathIgnorePatterns": [
       "/\\.#.*",
       "/.*~",

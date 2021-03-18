@@ -12,7 +12,7 @@ const useRequestPwReset = ({
 }) => {
   const RequestPwReset = ({
     containerStyle,
-    onRequestPwReset = () => {},
+    onRequestPasswordReset = () => {},
     apiVersion,
     user,
     defaulLang = "en",
@@ -21,6 +21,7 @@ const useRequestPwReset = ({
 
     const [loading, setLoading] = useState(false);
     const [emailUnknown, setEmailUnknown] = useState(false);
+    const [requestDone, setRequestDone] = useState(false);
 
     const onSubmit = async ({ email }) => {
       if (email) {
@@ -37,7 +38,8 @@ const useRequestPwReset = ({
         try {
           await req;
           setLoading(false);
-          onRequestPwReset();
+          setRequestDone(true);
+          onRequestPasswordReset();
         } catch (e) {
           if (e) {
             console.log(e);
@@ -46,6 +48,14 @@ const useRequestPwReset = ({
         }
       }
     };
+
+    if (requestDone) {
+      return (
+        <div>
+          <div>{strings.pwForgotten.done}</div>
+        </div>
+      );
+    }
 
     return (
       <Formik
@@ -75,7 +85,7 @@ const useRequestPwReset = ({
     lang: PropTypes.string,
     containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
-    onRequestPwReset: PropTypes.func,
+    onRequestPasswordReset: PropTypes.func,
     user: PropTypes.object,
     defaulLang: PropTypes.string,
   };

@@ -113,7 +113,7 @@ describe("Reset Pw", () => {
   test("Should reset successfully", async () => {
     postApiMock(200, "ok");
     const onResetPw = jest.fn();
-    render(<MyPwReset onRequestPwReset={onResetPw} />);
+    render(<MyPwReset onRequestPasswordReset={onResetPw} />);
     const email = screen.getByLabelText("Email");
     const button = screen.getByRole("button", { name: "Reset password" });
     await userEvent.type(email, "test@web.de");
@@ -121,6 +121,14 @@ describe("Reset Pw", () => {
     await waitFor(() => expect(button).toBeDisabled());
     await waitFor(() => expect(button).toBeEnabled());
     expect(onResetPw.mock.calls.length).toBe(1);
+    await waitFor(() =>
+      expect(
+        screen.queryByText(
+          "Don't worry, we have send you an email to the specified address." +
+            " Please follow the instructions in the email to set a new password."
+        )
+      ).toBeInTheDocument()
+    );
   });
 });
 

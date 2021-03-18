@@ -45,7 +45,7 @@ const useResetPassword = ({
           .on({ status: 401, error: "User not found" }, () => {
             setTokenWrong(true);
           })
-          .on({ status: 400, error: "Authorization wrong" }, () => {
+          .on({ status: 401, error: "Unauthorized" }, () => {
             setTokenWrong(true);
           });
         if (apiVersion) {

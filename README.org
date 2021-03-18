@@ -2,126 +2,333 @@
 #+DATE: [2019-02-06 Wed]
 #+AUTHOR: Philipp Uhl
 
-* Frontend
+This package provides the frontend logic in form of react components
+for login, signup and password reset on the web. Styling has to be
+applied, later.
 
-** Redux Interface
+This package is designed to interact with the API as defined by
+[[https://github.com/phuhl/apparts-login-server][@apparts/login-server]].
 
-This component provides the states
-- ~token~ :: The Basic-auth token for the API
-- ~id~ :: The users ID
-- ~name~ :: The users name
-- ~email~ :: The users Email-Address
+* Usage
 
-In order to logout a user simply delete the complete store and return
-to the Login screen.
-
-** Screens
-
-This component provides the screens
-- ~Apparts.Login~ :: A Login-page for login with username and password
-- ~Apparts.Signup~ :: A Signup-page for username, password, name
-
-** Configuration
-
-Under the configuration name =login= the following options exist:
-- ~screenAfterLogin {string}~ :: The screen to maneuver to after
-     successful login
-- ~screenAfterSignup {string}~ :: The screen to maneuver to after
-     successful signup
-- ~nameLengthMin {int}~ :: The minimum length for the username
-- ~pwLengthMin {int}~ :: The minimum length for the password
-
-Under the configuration name =lang= the following options exist:
-- ~supportedLangs {[[string]]}~ :: Array with the possible languages
-     to choose from. The option has to be formatted like follows:
-     ~[['eng', 'US', 'English'], ['de', 'DE', 'Deutsch']]~ for the
-     languages with display texts =German= and =English=, using the
-     German and US American flags (=DE=, =US=) and referencing
-     language-objects with names =de= and =eng=.
-
-For using the =apparts-config= module with react native it is
-necessary to use the =babel-plugin-module-resolver= module in order to
-replace the =apparts-config= module project wide with a short file
-that implements the function ~get~ like this:
-
-#+BEGIN_SRC js
-module.exports.get = (config) => {
-  return {
-    // my configs
-    login: {
-      screenAfterLogin: 'myApp.main',
-      screenAfterSignup: 'myApp.welcome'
-    }
-  }[config];
-};
+#+BEGIN_SRC sh
+npm i --save react-redux react react-dom  @apparts/login @apparts/redux @apparts/api
 #+END_SRC
 
-The respective babel configuration in the file =babel.config.js= would
-be:
+Optionally, if you want an easy start:
 
-#+BEGIN_SRC js
-module.exports = {
-  // ...
-  "plugins": [
-    ["module-resolver", {
-      "alias": {
-        "apparts-config": "./src/config.js",
-        "apparts-react-navigation": "./node_modules/apparts-react-navigation"
-      }
-    }]
-  ]
-};
+#+BEGIN_SRC sh
+npm i --save @apparts/web-components
 #+END_SRC
 
-** Usage
+** Redux Store
 
-1. To register the screens include the package =apparts-login= in your
-   =src/screens/index.js= like this:
+This package makes use of the [[https://github.com/phuhl/apparts-redux][@apparts/redux]] format for redux store
+interoperability.
 
-   #+BEGIN_SRC js
-   export { Login, Signup } from 'apparts-login';
-   #+END_SRC
+To add the store:
+#+BEGIN_SRC js
+import configureStore from "@apparts/redux";
 
-2. To use the default language files import them like this in your
-   =src/lang/index.js=:
+import { loginStore } from "@apparts/login";
 
-   #+BEGIN_SRC js
-   import * as eng from './eng';
-   import * as AppartsLogin from 'apparts-login';
-   const lang = { eng: {...AppartsLogin.lang.eng, ...eng.eng }};
-   module.exports = lang;
-   #+END_SRC
+const { store, persistor } = configureStore({ ...loginStore });
+#+END_SRC
 
-   You can partly overwrite the provided ~lang~-Object if necessary.
+** Components
 
-3. In order to start the application with a login/signup-screen:
+Each of the components can be retrieved through a hook. Below, the
+signature for the ~useLogin~ hook is shown, the other hooks are
+analogous.
 
-   #+BEGIN_SRC js
-   import { startApp } from './src/utils/navigation';
-   // get Store s
-   startApp({ startScreen: 'Apparts.Signup', store: s});
-   #+END_SRC
+~useLogin: (config: object) => Login~ parameters:
+- ~config: <object>~ :: An object that takes these keys:
+  - ~components: <object>~ :: The components to be used. At least the
+    components ~FormikInput~, ~Button~, ~Link~, ~ErrorMessage~ have to be
+    provided, in the format as defined in [[https://github.com/phuhl/apparts-web-components][@apparts/web-components]]
+    (exception: Link is not yet defined in [[https://github.com/phuhl/apparts-web-components][@apparts/web-components]],
+    it's definition can be seen in the Login example. The Link
+    component is only required for Login.).
+  - ~api: <@apparts/api>~ :: An API as created with  [[https://github.com/phuhl/apparts-frontend-api][@apparts/api]]
+  - ~strings: <?object>~ :: The used texts for internationalization. You
+    can pass your own or not pass anything, then the default strings
+    will be used. To know, what to pass in, check out the file
+    ~src/lang/index.js~. To overwrite only certain strings, you can
+    import the strings with ~import { strings } from "@apparts/login";~.
 
-4. It might be necessary to limit the directories from which modules
-   can be imported to only the root level of =node_modules= by putting
-   the following into your =webpack= configuration
 
-   #+BEGIN_SRC js
-     resolve: {
-       // ...
-       alias: {
-         // ...
-         'apparts-react-navigation': join(__dirname, './node_modules/apparts-react-navigation')
-       }
-     }
-   #+END_SRC
+The hooks return the react component. All react components are
+connected to the redux store, by default. They expect the ~user~ redux
+store, that is automatically created, as described in the previous
+section. Additionally, the components understand the ~lang~ store, which
+is a string that defines the language to be used. The definition of
+the ~lang~ store is optional and not automatically done.
 
-5. Install peer-dependencies for frontend
+Create screens with your favorite routing library (or however you
+prefer to do it) for each of these components:
 
-   - "apparts-frontend-api": "git+ssh://git@ph-uhl.com:Apparts/apparts-frontend-api.git#semver:^1.0.0",
-   - "apparts-react-native-components": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-native-components.git#semver:^1.0.0",
-   - "apparts-react-navigation": "git+ssh://git@ph-uhl.com:Apparts/apparts-react-navigation.git#semver:^1.0.0",
-   - "apparts-redux": "git+ssh://git@ph-uhl.com:Apparts/apparts-redux.git#semver:^1.0.0",
-   - "base-64": "^0.1.0",
-   - "react": "^16.8.1",
-   - "react-native": "^0.58.4",
+*** Login
+
+The Login component can be retrieved through the ~useLogin~ hook.
+
+Parameters:
+- ~lang: <?string>~ :: Can be passed in through redux, defines the
+  language. The value must be one of the keys from the ~strings~ object,
+  that has been passed to the ~useLogin~ hook.
+- ~containerStyle: <?object>~ :: The style for the outermost div.
+- ~apiVersion: <?number>~ :: Default: 1. An optional Api version, to be passed on to
+  @apparts/api on api calls.
+- ~onLogin: <?(user: <object>) => <any>>~ :: A function that will be called, after the login
+  has happened. The function get's passed an object, that contains ~id~,
+  ~loginToken~, ~apiToken~, ~email~.
+- ~onLogout: <?func>~ :: A function that will be called, when the user
+  logged out.
+- ~login: <?func>~ :: Passed through redux.
+- ~logout: <?func>~ :: Passed through redux.
+- ~logMeOut: <?bool>~ :: Default: false. If set to true, the currently
+  logged in user will be logged out.
+- ~user: <?object>~ :: Passed through redux.
+- ~pwForgottenUrl: <?string>~ :: Default: "/passwordreset". The url,
+  that the Link will point to, that directs the user to the password
+  reset form.
+- ~defaulLang: <?string>~ :: Default: "en". If no value has been passed
+  for ~lang~, the value from ~defaultLang~ will be used.
+
+
+Example:
+
+#+BEGIN_SRC js
+  import React from "react";
+  import { useLogin } from "@apparts/login";
+  import * as components from "@apparts/web-components";
+
+  // Import your configured @apparts/api here:
+  import * as api from "helpers/api";
+
+  const LoginScreen = () => {
+    const Login = useLogin({
+      api,
+      components: {
+        ...components,
+        Link: ({ to, children }) => <a href={to}>{children}</a>,
+      },
+    });
+    return (
+        <div style={{
+          maxWidth: 600,
+          margin: "auto",
+          padding: 20,
+          marginTop: 100,
+        }}>
+          <Login pwForgottenUrl="/account/requestpwreset" />
+        </div>
+    );
+  };
+
+  export default LoginScreen;
+#+END_SRC
+
+*** Signup
+
+The Signup component can be retrieved through the ~useSignup~ hook.
+
+You can specify which fields should be asked for on signup. The email
+field will always be asked for.
+
+Parameters:
+- ~lang: <?string>~ :: Can be passed in through redux, defines the
+  language. The value must be one of the keys from the ~strings~ object,
+  that has been passed to the ~useSignup~ hook.
+- ~containerStyle: <?object>~ :: The style for the outermost div.
+- ~apiVersion: <?number>~ :: Default: 1. An optional Api version, to be passed on to
+  @apparts/api on api calls.
+- ~onSignup: <?(input: <object>) => <any>>~ :: A function that will be called, after the signup
+  has happened. The function get's passed an object, that contains all
+  inputs from the Signup form (that means, at least ~email~).
+- ~signup: <?func>~ :: Passed through redux.
+- ~user: <?object>~ :: Passed through redux.
+- ~defaulLang: <?string>~ :: Default: "en". If no value has been passed
+  for ~lang~, the value from ~defaultLang~ will be used.
+- ~initialValues: <?object>~ :: For additional signup fields, you have
+  to specify their default values in this object. Key is the field
+  name, value is the default value.
+- ~validation: <?object>~ :: For additional signup fields, you have to
+  specify their validation functions. Use [[https://github.com/jquense/yup][yup]] for validation. Key is
+  the fields name, value is a yup-function.
+- ~firstFields: <?array>~ :: For additional signup fields before the
+  email field, you have to pass their components into this
+  parameter. The components must be understood by [[https://formik.org][formik]].
+- ~lastFields: <?array>~ :: For additional signup fields before the
+  email field, you have to pass their components into this parameter.
+  The components must be understood by [[https://formik.org][formik]].
+- ~transformBeforeSend: <?func>~ :: If you need to transform the input
+  values before they are send to the API, you can pass a function. It
+  receives an object with input name as key and value as value. The
+  same format has to be returned.
+
+
+Example:
+
+#+BEGIN_SRC js
+  import React from "react";
+  import { useSignup } from "@apparts/login";
+  import * as components from "@apparts/web-components";
+
+  // Import your configured @apparts/api here:
+  import * as api from "helpers/api";
+
+  const SignupScreen = () => {
+    const Signup = useSignup({ api, components });
+    return (
+      <div
+        style={{
+          maxWidth: 600,
+          margin: "auto",
+          padding: 20,
+          marginTop: 100,
+        }}
+      >
+        <Signup />
+      </div>
+    );
+  };
+
+  export default SignupScreen;
+#+END_SRC
+
+*** ResetPassword
+
+The ResetPassword component can be retrieved through the
+~useResetPassword~ hook.
+
+It should be used on two separate screens:
+- A reset password screen, that is meant for resetting a password,
+  after the user received an email with an url for that purpose.
+- A welcome screen, that should be linked to in the validation email,
+  that the user should receive after signup. Here, the user can
+  specify their password for the first time.
+
+After the user successfully sets a password, a text will shown, that
+confirms the successful action. Optionally an "Ok" button can be
+shown (which could be configured to redirect the user to an appropriate
+site).
+
+Parameters:
+- ~lang: <?string>~ :: Can be passed in through redux, defines the
+  language. The value must be one of the keys from the ~strings~ object,
+  that has been passed to the ~useResetPassword~ hook.
+- ~containerStyle: <?object>~ :: The style for the outermost div.
+- ~apiVersion: <?number>~ :: Default: 1. An optional Api version, to be passed on to
+  @apparts/api on api calls.
+- ~onResetPassword: <?(input: <object>) => <any>>~ :: A function that
+  will be called, after the resetPassword has happened.
+- ~defaulLang: <?string>~ :: Default: "en". If no value has been passed
+  for ~lang~, the value from ~defaultLang~ will be used.
+- ~validatePassword: <?object>~ :: For password policies. Use [[https://github.com/jquense/yup][yup]] for
+  validation. Key is the fields name, value is a yup-function.
+- ~welcome: <?bool>~ :: Default: false. If true, instead of resetting a
+  password, this component sets the password for the first time, after
+  the user received a confirmation email. The strings used differ and
+  can be specified separately.
+- ~email: <?string>~ :: The users email. It should be taken from the
+  query parameters of the reset password URL. Even though optional, when the value is missing,
+  the component will not send an API request, but show an error
+  message, that the URL used is broken.
+- ~token: <?string>~ :: The on time token that authorizes the user to
+  set the password. It should be taken from the
+  query parameters of the reset password URL. Even though optional, when the value is missing,
+  the component will not send an API request, but show an error
+  message, that the URL used is broken.
+- ~onDone: <?func>~ :: If a function is passed, after successfully
+  resetting the password, additionally to an explanatory text there
+  will be an "Ok" button shown. On click of that button, the ~onDone~
+  function is called.
+
+Example with [[https://reactrouter.com/][react-router]] as routing library:
+
+#+BEGIN_SRC js
+  import React from "react";
+  import { useResetPassword } from "@apparts/login";
+  import * as components from "@apparts/web-components";
+  import { useLocation } from "react-router-dom";
+
+  // Import your configured @apparts/api here:
+  import * as api from "helpers/api";
+
+  const ResetPasswordScreen = () => {
+    const ResetPassword = useResetPassword({
+      api,
+      components: components,
+    });
+    const { search } = useLocation(),
+          email = new URLSearchParams(search).get("email"),
+          token = new URLSearchParams(search).get("token");
+    return (
+      <div
+        style={{
+          maxWidth: 600,
+          margin: "auto",
+          padding: 20,
+          marginTop: 100,
+        }}
+      >
+        <ResetPassword email={email} token={token} />
+      </div>
+    );
+  };
+
+  export default ResetPasswordScreen;
+#+END_SRC
+
+*** RequestPasswordReset
+
+The RequestPasswordReset component can be retrieved through the
+~useRequestPasswordReset~ hook.
+
+After the user successfully requests a password reset, a text will
+shown, that confirms the successful action.
+
+Parameters:
+- ~lang: <?string>~ :: Can be passed in through redux, defines the
+  language. The value must be one of the keys from the ~strings~ object,
+  that has been passed to the ~useRequestPasswordReset~ hook.
+- ~containerStyle: <?object>~ :: The style for the outermost div.
+- ~apiVersion: <?number>~ :: Default: 1. An optional Api version, to be passed on to
+  @apparts/api on api calls.
+- ~onRequestPasswordReset: <?(input: <object>) => <any>>~ :: A function that
+  will be called, after the password reset request has happened.
+- ~defaulLang: <?string>~ :: Default: "en". If no value has been passed
+  for ~lang~, the value from ~defaultLang~ will be used.
+
+Example with [[https://reactrouter.com/][react-router]] as routing library:
+
+#+BEGIN_SRC js
+    import React from "react";
+    import { useRequestPasswordReset } from "@apparts/login";
+    import * as components from "@apparts/web-components";
+
+    // Import your configured @apparts/api here:
+    import * as api from "helpers/api";
+
+  const RequestPWResetScreen = () => {
+    const RequestPWReset = useRequestPasswordReset({
+      api,
+      components: components,
+    });
+    return (
+        <div
+          style={{
+            maxWidth: 600,
+            margin: "auto",
+            padding: 20,
+            marginTop: 100,
+          }}
+        >
+          <RequestPWReset />
+        </div>
+    );
+  };
+
+  export default RequestPWResetScreen;
+#+END_SRC
+
