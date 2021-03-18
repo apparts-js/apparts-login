@@ -29,13 +29,13 @@ const useLogin = ({
     const [wrong, setWrong] = useState(false);
 
     useEffect(() => {
-      if (user.id) {
+      if (user.id && !logMeOut) {
         onLogin(user);
       }
-    }, [user]);
+    }, [user, logMeOut]);
 
     useEffect(() => {
-      if (logMeOut) {
+      if (user.id && logMeOut) {
         logout();
         onLogout();
       }
