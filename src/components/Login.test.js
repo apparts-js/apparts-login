@@ -205,15 +205,17 @@ describe("Log in", () => {
 
 describe("Log out", () => {
   test("Should log out successfully", async () => {
+    const onLogin = jest.fn();
     const onLogout = jest.fn();
-    render(<MyLogin onLogout={onLogout} logMeOut />);
+    render(<MyLogin onLogin={onLogin} onLogout={onLogout} logMeOut />);
     screen.getByLabelText("Email");
     screen.getByLabelText("Password");
     const button = screen.getByRole("button", { name: "Log in" });
     await (() => expect(button).toBeEnabled());
     const { user } = store.getState();
     expect(user).toStrictEqual({});
-    expect(onLogout.mock.calls.length).toBe(1);
+    await waitFor(() => expect(onLogout.mock.calls.length).toBe(1));
+    await waitFor(() => expect(onLogin.mock.calls.length).toBe(0));
   });
 });
 

@@ -330,12 +330,12 @@ var useLogin = function useLogin(_ref) {
         setWrong = _useState4[1];
 
     React.useEffect(function () {
-      if (user.id) {
+      if (user.id && !logMeOut) {
         onLogin(user);
       }
-    }, [user]);
+    }, [user, logMeOut]);
     React.useEffect(function () {
-      if (logMeOut) {
+      if (user.id && logMeOut) {
         logout();
         onLogout();
       }

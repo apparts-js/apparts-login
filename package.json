@@ -6,9 +6,11 @@
   "module": "index.js",
   "scripts": {
     "test": "react-scripts test",
+    "testOne": "jest",
     "testRun": "react-scripts start",
     "build": "rollup -c",
-    "buildWatch": "rollup -c -w"
+    "buildWatch": "rollup -c -w",
+    "prepublish": "npm run testOne && npm run build"
   },
   "files": [
     "dist"
