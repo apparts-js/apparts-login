@@ -192,19 +192,19 @@ var reducer = function reducer(types) {
 };
 
 var actionNames = [logout().type, login().type, setLanguage().type];
-var index = {
+var user = {
   reducer: reducer,
   actionNames: actionNames,
   login: login,
   logout: logout
 };
 
-var index$1 = /*#__PURE__*/Object.freeze({
+var index = /*#__PURE__*/Object.freeze({
   __proto__: null,
   login: login,
   logout: logout,
   setLanguage: setLanguage,
-  'default': index
+  'default': user
 });
 
 var en = {
@@ -608,7 +608,6 @@ var useSignup = function useSignup(_ref) {
     apiVersion: PropTypes.number,
     onSignup: PropTypes.func,
     user: PropTypes.object,
-    pwForgottenUrl: PropTypes.string,
     defaulLang: PropTypes.string,
     initialValues: PropTypes.object,
     validation: PropTypes.object,
@@ -702,8 +701,8 @@ var useResetPassword = function useResetPassword(_ref) {
                 }, function () {
                   setTokenWrong(true);
                 }).on({
-                  status: 400,
-                  error: "Authorization wrong"
+                  status: 401,
+                  error: "Unauthorized"
                 }, function () {
                   setTokenWrong(true);
                 });
@@ -813,8 +812,8 @@ var useRequestPwReset = function useRequestPwReset(_ref) {
 
   var RequestPwReset = function RequestPwReset(_ref2) {
     var containerStyle = _ref2.containerStyle,
-        _ref2$onRequestPwRese = _ref2.onRequestPwReset,
-        onRequestPwReset = _ref2$onRequestPwRese === void 0 ? function () {} : _ref2$onRequestPwRese,
+        _ref2$onRequestPasswo = _ref2.onRequestPasswordReset,
+        onRequestPasswordReset = _ref2$onRequestPasswo === void 0 ? function () {} : _ref2$onRequestPasswo,
         apiVersion = _ref2.apiVersion,
         user = _ref2.user,
         _ref2$defaulLang = _ref2.defaulLang,
@@ -831,6 +830,11 @@ var useRequestPwReset = function useRequestPwReset(_ref) {
         emailUnknown = _useState4[0],
         setEmailUnknown = _useState4[1];
 
+    var _useState5 = React.useState(false),
+        _useState6 = _slicedToArray(_useState5, 2),
+        requestDone = _useState6[0],
+        setRequestDone = _useState6[1];
+
     var onSubmit = /*#__PURE__*/function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref3) {
         var email, req;
@@ -841,7 +845,7 @@ var useRequestPwReset = function useRequestPwReset(_ref) {
                 email = _ref3.email;
 
                 if (!email) {
-                  _context.next = 17;
+                  _context.next = 18;
                   break;
                 }
 
@@ -861,12 +865,13 @@ var useRequestPwReset = function useRequestPwReset(_ref) {
 
               case 9:
                 setLoading(false);
-                onRequestPwReset();
-                _context.next = 17;
+                setRequestDone(true);
+                onRequestPasswordReset();
+                _context.next = 18;
                 break;
 
-              case 13:
-                _context.prev = 13;
+              case 14:
+                _context.prev = 14;
                 _context.t0 = _context["catch"](6);
 
                 if (_context.t0) {
@@ -875,18 +880,22 @@ var useRequestPwReset = function useRequestPwReset(_ref) {
 
                 setLoading(false);
 
-              case 17:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[6, 13]]);
+        }, _callee, null, [[6, 14]]);
       }));
 
       return function onSubmit(_x) {
         return _ref4.apply(this, arguments);
       };
     }();
+
+    if (requestDone) {
+      return /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("div", null, strings.pwForgotten.done));
+    }
 
     return /*#__PURE__*/React__default.createElement(formik.Formik, {
       initialValues: {
@@ -914,7 +923,7 @@ var useRequestPwReset = function useRequestPwReset(_ref) {
     lang: PropTypes.string,
     containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
-    onRequestPwReset: PropTypes.func,
+    onRequestPasswordReset: PropTypes.func,
     user: PropTypes.object,
     defaulLang: PropTypes.string
   };
@@ -926,10 +935,15 @@ var useRequestPwReset = function useRequestPwReset(_ref) {
   }, {})(RequestPwReset), [InputField, Button, ErrorMessage, post, languages]);
 };
 
+var loginStore = {
+  user: user
+};
+
+exports.actions = index;
+exports.loginStore = loginStore;
 exports.strings = defLanguages;
 exports.useLogin = useLogin;
-exports.useRequestPwReset = useRequestPwReset;
+exports.useRequestPasswordReset = useRequestPwReset;
 exports.useResetPassword = useResetPassword;
 exports.useSignup = useSignup;
-exports.userStore = index$1;
 //# sourceMappingURL=index.js.map
