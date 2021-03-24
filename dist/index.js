@@ -150,6 +150,44 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
+var renewApiToken = function renewApiToken(api) {
+  return /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dispatch, getState) {
+      var _getState, _getState$user, email, loginToken, apiToken;
+
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _getState = getState(), _getState$user = _getState.user, email = _getState$user.email, loginToken = _getState$user.loginToken;
+              _context.next = 3;
+              return api.get("user/apiToken").authPW(email, loginToken);
+
+            case 3:
+              apiToken = _context.sent;
+              dispatch(updateUser({
+                apiToken: apiToken
+              }));
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function (_x, _x2) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+};
+var updateUser = function updateUser(user) {
+  return {
+    type: "USER_UPDATE",
+    user: user
+  };
+};
 var login = function login(user) {
   return {
     type: "USER_LOGIN",
@@ -174,6 +212,9 @@ var reducer = function reducer(types) {
     var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     switch (action.type) {
+      case types.USER_UPDATE.name:
+        return _objectSpread2(_objectSpread2({}, state), action.user);
+
       case types.USER_LOGIN.name:
         return _objectSpread2({}, action.user);
 
@@ -191,7 +232,14 @@ var reducer = function reducer(types) {
   };
 };
 
-var actionNames = [logout().type, login().type, setLanguage().type];
+var actionNames = [logout().type, login().type, setLanguage().type, updateUser().type];
+var getUserDataFromApiToken = function getUserDataFromApiToken(user) {
+  try {
+    return JSON.parse(atob(user.apiToken.split(".")[1])) || {};
+  } catch (e) {
+    return {};
+  }
+};
 var user = {
   reducer: reducer,
   actionNames: actionNames,
@@ -201,9 +249,12 @@ var user = {
 
 var index = /*#__PURE__*/Object.freeze({
   __proto__: null,
+  renewApiToken: renewApiToken,
+  updateUser: updateUser,
   login: login,
   logout: logout,
   setLanguage: setLanguage,
+  getUserDataFromApiToken: getUserDataFromApiToken,
   'default': user
 });
 
@@ -940,6 +991,7 @@ var loginStore = {
 };
 
 exports.actions = index;
+exports.getUserDataFromApiToken = getUserDataFromApiToken;
 exports.loginStore = loginStore;
 exports.strings = defLanguages;
 exports.useLogin = useLogin;
