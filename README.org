@@ -35,6 +35,25 @@ import { loginStore } from "@apparts/login";
 const { store, persistor } = configureStore({ ...loginStore });
 #+END_SRC
 
+Certain redux actions and helpers are predefined. They can be imported
+like this:
+
+#+BEGIN_SRC js
+import { actions, getUserDataFromApiToken } from "@apparts/login";
+// Use like this:
+// actions.logout();
+#+END_SRC
+
+You can use these actions:
+- ~renewApiToken(api)~ :: Renews the api token of the user
+- ~updateUser(user)~ :: Updates the user object by merging the provided
+  user into the current user
+- ~login(user)~ :: Stores the user
+- ~logout()~ :: Removes the user
+
+Helper functions:
+- ~getUserDataFromApiToken(user)~ :: Returns the content of the Api token.
+
 ** Components
 
 Each of the components can be retrieved through a hook. Below, the
