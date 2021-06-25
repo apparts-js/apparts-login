@@ -10,6 +10,7 @@ const useResetPassword = ({
   components: { FormikInput: InputField, Button, Link, ErrorMessage },
   strings: languages = defLanguages,
   api: { put },
+  apiPrefix: apiPrefix = "user",
 }) => {
   const ResetPassword = ({
     containerStyle,
@@ -39,7 +40,7 @@ const useResetPassword = ({
       if (password) {
         setTokenWrong(false);
         setLoading(true);
-        const req = put("user")
+        const req = put(apiPrefix)
           .authPW(email, token)
           .data({ password })
           .on({ status: 401, error: "User not found" }, () => {

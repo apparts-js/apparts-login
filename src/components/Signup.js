@@ -8,6 +8,7 @@ import * as defLanguages from "../lang/index";
 const useSignup = ({
   components: { FormikInput: InputField, Button, Link, ErrorMessage },
   strings: languages = defLanguages,
+  apiPrefix: apiPrefix = "user",
   api: { post },
 }) => {
   const Signup = ({
@@ -39,7 +40,7 @@ const useSignup = ({
       if (await validationSchema.isValid(params)) {
         setUserExists(false);
         setLoading(true);
-        const req = post("user")
+        const req = post(apiPrefix)
           .data(transformBeforeSend(params))
           .on({ status: 413, error: "User exists" }, () => {
             setUserExists(true);

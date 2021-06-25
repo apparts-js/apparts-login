@@ -9,6 +9,7 @@ const useRequestPwReset = ({
   components: { FormikInput: InputField, Button, ErrorMessage },
   strings: languages = defLanguages,
   api: { post },
+  apiPrefix: apiPrefix = "user",
 }) => {
   const RequestPwReset = ({
     containerStyle,
@@ -27,7 +28,7 @@ const useRequestPwReset = ({
       if (email) {
         setEmailUnknown(false);
         setLoading(true);
-        const req = post("user/$1/reset", [email])
+        const req = post(apiPrefix + "/$1/reset", [email])
           .auth(false.auth)
           .on(404, () => {
             setEmailUnknown(true);

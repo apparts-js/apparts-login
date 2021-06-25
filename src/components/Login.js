@@ -9,6 +9,7 @@ import * as defLanguages from "../lang/index";
 const useLogin = ({
   components: { FormikInput: InputField, Button, Link, ErrorMessage },
   strings: languages = defLanguages,
+  apiPrefix: apiPrefix = "user",
   api: { get },
 }) => {
   const Login = ({
@@ -45,7 +46,7 @@ const useLogin = ({
       if (email && password) {
         setWrong(false);
         setLoading(true);
-        const req = get("user/login")
+        const req = get(apiPrefix + "/login")
           .authPW(email, password)
           .on(400, () => {})
           .on(401, () => {});
