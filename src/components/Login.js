@@ -36,11 +36,11 @@ const useLogin = ({
     }, [user, logMeOut]);
 
     useEffect(() => {
-      if (user.id && logMeOut) {
+      if (logMeOut) {
         logout();
         onLogout();
       }
-    }, [logout, logMeOut]);
+    }, [logMeOut]);
 
     const onSubmit = async ({ email, password }) => {
       if (email && password) {
