@@ -29,7 +29,7 @@ const useRequestPwReset = ({
         setEmailUnknown(false);
         setLoading(true);
         const req = post(apiPrefix + "/$1/reset", [email])
-          .auth(false.auth)
+          .auth(false)
           .on(404, () => {
             setEmailUnknown(true);
           });
