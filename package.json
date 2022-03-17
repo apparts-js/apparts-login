@@ -1,6 +1,6 @@
 {
   "name": "@apparts/login",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "Login and Signup for Web, Apps, Server",
   "main": "dist/index.js",
   "module": "index.js",
