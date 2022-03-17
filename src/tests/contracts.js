@@ -42,7 +42,9 @@ const persistContract = (testName) => {
   let apiContract = {};
   try {
     apiContract = JSON.parse(fs.readFileSync("./apiContract.json").toString());
-  } catch (e) {}
+  } catch (e) {
+    /*empty*/
+  }
   fs.writeFileSync(
     "./apiContract.json",
     JSON.stringify(
