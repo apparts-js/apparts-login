@@ -14,8 +14,7 @@ export const en = {
       " address. Please register using another email address. If" +
       " you have forgotten your password you can reset it on the login page.",
     signup: "Register",
-    done:
-      "We have send you an email to confirm your account. Please follow the instructions in the email to log in.",
+    done: "We have send you an email to confirm your account. Please follow the instructions in the email to log in.",
   },
   login: {
     login: "Log in",
@@ -69,8 +68,7 @@ export const de = {
       " Bitte benutzen Sie eine andere Adresse. Falls" +
       " Sie ihr Passwort vergessen haben sollten können Sie es ",
     signup: "Registrieren",
-    done:
-      "Wir haben Ihnen eine Email zur bestätigung Ihres Accounts geschickt. Bitte folgen Sie den Anweisungen in der Email um sich einzuloggen.",
+    done: "Wir haben Ihnen eine Email zur bestätigung Ihres Accounts geschickt. Bitte folgen Sie den Anweisungen in der Email um sich einzuloggen.",
   },
   login: {
     login: "Jetzt einloggen",

@@ -6,11 +6,16 @@
   "module": "index.js",
   "scripts": {
     "test": "react-scripts test",
-    "testOnce": "react-scripts test --watchAll=false",
-    "testRun": "react-scripts start",
+    "test:one": "react-scripts test --watchAll=false",
+    "test:run": "react-scripts start",
     "build": "rollup -c",
     "buildWatch": "rollup -c -w",
-    "prepublishOnly": "npm run testOnce && npm run build"
+    "prepublishOnly": "npm run testOnce && npm run build",
+    "ci": "npm ci && npm run ci:prettier && npm run ci:eslint && npm run ci:test",
+    "ci:prettier": "CI=true prettier --check .",
+    "ci:test": "CI=true npm run test:one",
+    "ci:eslint": "eslint . --ext .js,.jsx,.ts,.tsx -c .eslintrc.ci.js",
+    "clean": "rimraf coverage build tmp"
   },
   "files": [
     "dist"
@@ -44,9 +49,11 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.8.3",
-    "eslint": "^7.21.0",
+    "eslint": "^7.32.0",
     "jsonwebtoken": "^8.5.1",
+    "prettier": "^2.6.0",
     "react-scripts": "^4.0.3",
+    "rimraf": "^3.0.2",
     "web-vitals": "^1.0.1"
   },
   "peerDependencies": {

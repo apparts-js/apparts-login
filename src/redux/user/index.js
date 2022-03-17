@@ -1,4 +1,4 @@
-export let renewApiToken = (api) => async (dispatch, getState) => {
+export const renewApiToken = (api) => async (dispatch, getState) => {
   const {
     user: { email, loginToken },
   } = getState();
@@ -25,20 +25,22 @@ export const setLanguage = (lang) => ({
   lang,
 });
 
-const reducer = (types) => (state = {}, action = {}) => {
-  switch (action.type) {
-    case types.USER_UPDATE.name:
-      return { ...state, ...action.user };
-    case types.USER_LOGIN.name:
-      return { ...action.user };
-    case types.USER_LOGOUT.name:
-      return {};
-    case types.SET_LANGUAGE.name:
-      return { ...state, lang: action.lang };
-    default:
-      return state;
-  }
-};
+const reducer =
+  (types) =>
+  (state = {}, action = {}) => {
+    switch (action.type) {
+      case types.USER_UPDATE.name:
+        return { ...state, ...action.user };
+      case types.USER_LOGIN.name:
+        return { ...action.user };
+      case types.USER_LOGOUT.name:
+        return {};
+      case types.SET_LANGUAGE.name:
+        return { ...state, lang: action.lang };
+      default:
+        return state;
+    }
+  };
 
 const actionNames = [
   logout().type,
