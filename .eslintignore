@@ -8,3 +8,4 @@ setupTests.js
 craco.config.js
 rollup.config.js
 /cypress
+/dist
