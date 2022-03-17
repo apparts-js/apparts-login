@@ -8,7 +8,7 @@
     "test": "react-scripts test",
     "test:one": "react-scripts test --watchAll=false",
     "test:run": "react-scripts start",
-    "build": "rollup -c",
+    "build": "npm run clean && rollup -c",
     "buildWatch": "rollup -c -w",
     "prepublishOnly": "npm run ci && npm run build",
     "ci": "npm ci && npm run ci:prettier && npm run ci:eslint && npm run ci:test",
