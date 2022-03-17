@@ -10,6 +10,8 @@ logs/
 config/*.json
 !config/*.example.json
 dist/
+coverage/
 
 #tern files
 .tern-port
+
