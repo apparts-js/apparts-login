@@ -130,6 +130,8 @@ Example with [[https://reactrouter.com/][react-router]] as routing library:
           logout = new URLSearchParams(search).get("logout"),
           history = useHistory();
 
+    const onLogin = () => history.push("/");
+
     const Login = useLogin({
       api,
       components: {
@@ -145,7 +147,7 @@ Example with [[https://reactrouter.com/][react-router]] as routing library:
              marginTop: 100,
            }}>
         <Login pwForgottenUrl="/requestpwreset"
-               onLogin={() => history.push("/")}
+               onLogin={() => onLogin}
                onLogout={() => history.push("/login")}
         />
       </div>
@@ -360,3 +362,90 @@ Example with [[https://reactrouter.com/][react-router]] as routing library:
   export default RequestPWResetScreen;
 #+END_SRC
 
+** Redirect to Login and back
+
+In many applications you will want an unauthenticated user to be
+presented with a login form and after login redirected to the URL,
+that the user actually wanted to visit. @apparts/login provides some
+tools for this purpose.
+
+- ~utils.buildRedirector : (queryParams, ?redirectExcludes) => {str, obj}~ ::
+  - =queryParams= is the search string, that should be present after all
+    redirects.
+  - ~redirectExcludes~ is an optional array of paths, on which you don't want a
+    redirect to happen (e.g. on your login or signup page).
+  - The function returns an object with ~str~, the search string, that
+    the login page will use to redirect after login and ~obj~, an object
+    with the search parameters as of ~str~ as key-value pairs.
+- ~utils.buildGetLoggedInUser : (goToLogin) => user~ :: A function, used
+  to build a ~useUser~ function. It returns the currently logged in user
+  (if any) and if no user is logged in, it calls the ~goToLogin~
+  parameter function. That function then can redirect to the login page.
+- ~utils.getRedirectUrl : (redirect, rsearch) => string~ :: A function,
+  that takes the search parameters ~redirect~ and ~rsearch~ as strings (as
+  they can be present on the login page) and builds the url to push
+  to, after successful login.
+
+Within a utility file (here called ~utils~), import the utils and export functions to your
+liking. Here an example using [[https://reactrouter.com/][react-router]] as routing library:
+
+#+BEGIN_SRC js
+// utils.js
+import { useHistory } from "react-router-dom";
+
+import { utils } from "@apparts/login";
+
+export const useRedirector = () => {
+  const { search } = window.location;
+  return utils.buildRedirector(search, ["login"]);
+};
+
+export const useUser = () => {
+  const history = useHistory();
+  utils.buildGetLoggedInUser(() => {
+    const redirectQuery = useRedirector();
+    history.push("/login" + redirectQuery.str);
+  });
+};
+
+export const getRedirectUrl = utils.getRedirectUrl;
+#+END_SRC
+
+On a page, that should redirect to login, if no authenticated user was
+found, use the ~useUser~ function to retrieve the user. It will
+automatically redirect to =/login= if no user is logged in.
+
+On the login screen, use something like this to do the redirect:
+
+
+Example with [[https://reactrouter.com/][react-router]] as routing library:
+
+#+BEGIN_SRC js
+  // ...
+
+  // import from the utility file, you created earlier:
+  import { getRedirectUrl } from "utils";
+  
+  const LoginScreen = () => {
+    const { search } = useLocation(),
+          redirect = new URLSearchParams(search).get("redirect"),
+          rsearch = new URLSearchParams(search).get("rsearch"),
+          // ...
+          history = useHistory();
+    
+    const onLogin = () => {
+      if (redirect) {
+        history.push(getRedirectUrl(redirect, rsearch));
+      } else {
+        history.push("/");
+      }
+    };
+  
+    const Login = useLogin({
+    // ...
+    });
+    return (/* ... */);
+  };
+  
+  export default LoginScreen;
+#+END_SRC

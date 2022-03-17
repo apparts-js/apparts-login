@@ -8,5 +8,6 @@ import user from "./src/redux/user/index";
 const loginStore = { user };
 export { loginStore };
 export * as actions from "./src/redux/user/index";
+export * as utils from "./src/utils/index";
 
 export { getUserDataFromApiToken } from "./src/redux/user/index";
