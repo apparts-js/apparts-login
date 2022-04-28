@@ -153,6 +153,26 @@ describe("Log in", () => {
     );
     expect(button).toBeEnabled();
   });
+  test("Should submit and throw error on too often", async () => {
+    getApiMock(425, { error: "Login failed, too often." });
+    render(<MyLogin />);
+    const email = screen.getByLabelText("Email");
+    const password = screen.getByLabelText("Password");
+    const button = screen.getByRole("button", { name: "Log in" });
+    await userEvent.type(email, "test@web.de");
+    await waitFor(() => userEvent.tab());
+    await userEvent.type(password, "nope,Wrong");
+    await waitFor(() => userEvent.tab());
+    expect(
+      screen.queryByText("Please enter your password.")
+    ).not.toBeInTheDocument();
+
+    await waitFor(() => userEvent.click(button));
+    await waitFor(() =>
+      screen.getByText("You tried to log in too often. Please try later again.")
+    );
+    expect(button).toBeEnabled();
+  });
   test("Should use specified api version", async () => {
     getApiMock(401, { error: "Unauthorized" });
     render(<MyLogin apiVersion={2} />);

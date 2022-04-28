@@ -21,6 +21,7 @@ export const en = {
     authWrong:
       "Your username or password is not correct. Please check your input.",
     pwForgotten: "Password forgotten",
+    tooManyRequests: "You tried to log in too often. Please try later again.",
   },
   pwForgotten: {
     requestPwReset: "Reset password",
@@ -75,6 +76,8 @@ export const de = {
     authWrong:
       "Nutzername oder Passwort sind falsch. Bitte überprüfen Sie Ihre Eingabe.",
     pwForgotten: "Passwort vergessen",
+    tooManyRequests:
+      "Sie haben Ihre Zugangsdaten zu oft falsch angegeben. Bitte warten Sie eine weile und versuchen Sie es erneut.",
   },
   pwForgotten: {
     requestPwReset: "Passwort zurücksetzen",

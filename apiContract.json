@@ -18,6 +18,22 @@
     },
     {
       "context": "get",
+      "status": 425,
+      "returns": {
+        "error": "Login failed, too often."
+      },
+      "params": [
+        "http://localhost:3000/v/1/user/login?",
+        {
+          "auth": {
+            "username": "test@web.de",
+            "password": "nope,Wrong"
+          }
+        }
+      ]
+    },
+    {
+      "context": "get",
       "status": 401,
       "returns": {
         "error": "Unauthorized"

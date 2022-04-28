@@ -48,8 +48,15 @@ const useLogin = ({
         setLoading(true);
         const req = get(apiPrefix + "/login")
           .authPW(email, password)
-          .on(400, () => {})
-          .on(401, () => {});
+          .on(425, () => {
+            setWrong(strings.login.tooManyRequests);
+          })
+          .on(400, () => {
+            setWrong(strings.login.authWrong);
+          })
+          .on(401, () => {
+            setWrong(strings.login.authWrong);
+          });
         if (apiVersion) {
           req.v(apiVersion);
         }
@@ -61,11 +68,10 @@ const useLogin = ({
           if (e) {
             alert(e);
           }
-          setWrong(true);
           setLoading(false);
         }
       } else {
-        setWrong(true);
+        setWrong(strings.login.authWrong);
       }
     };
 
@@ -91,7 +97,7 @@ const useLogin = ({
             <Button submit loading={loading}>
               {strings.login.login}
             </Button>
-            {wrong && <ErrorMessage message={strings.login.authWrong} />}
+            {wrong && <ErrorMessage message={wrong} />}
           </div>
           <div className="pwForgotten">
             <Link to={pwForgottenUrl}>{strings.login.pwForgotten}</Link>
