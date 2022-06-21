@@ -23,7 +23,7 @@ export const buildRedirector = (queryParams, redirectExcludes = []) => {
   const redirect = window.location.pathname.slice(1);
   let queryObj = {
     redirect,
-    rsearch: queryParams,
+    rsearch: decodeURIComponent(queryParams),
   };
   if (redirectExcludes.indexOf(redirect) !== -1 && !queryParams.redirect) {
     queryObj = {};
