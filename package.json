@@ -3,7 +3,7 @@
   "version": "3.6.0",
   "description": "Login and Signup for Web, Apps, Server",
   "main": "dist/index.js",
-  "module": "index.js",
+  "module": "dist/index.js",
   "scripts": {
     "test": "react-scripts test",
     "test:one": "react-scripts test --watchAll=false",
