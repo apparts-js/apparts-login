@@ -1,6 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import useLogin from "./Login";
 import { withStore, store } from "../redux/testStore";
@@ -72,17 +77,23 @@ describe("Login input validation", () => {
     await waitFor(() => userEvent.type(email, "test"));
     await waitFor(() => userEvent.tab());
     screen.getByText("Invalid email adress. Please check your input.");
-    expect(screen.getByRole("button", { name: "Log in" })).toBeEnabled();
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Log in" })).toBeEnabled()
+    );
     await waitFor(() => userEvent.clear(email));
-    screen.getByText("Please enter your email adress.");
-    expect(
-      screen.queryByText("Invalid email adress. Please check your input.")
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(
-        "Your username or password is not correct. Please check your input."
-      )
-    ).not.toBeInTheDocument();
+    await screen.findByText("Please enter your email adress.");
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Invalid email adress. Please check your input.")
+      ).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(
+        screen.queryByText(
+          "Your username or password is not correct. Please check your input."
+        )
+      ).not.toBeInTheDocument()
+    );
     expect(screen.getByRole("button", { name: "Log in" })).toBeEnabled();
   });
   test("Should render error on touched password", async () => {
@@ -91,7 +102,7 @@ describe("Login input validation", () => {
     await waitFor(() => userEvent.type(password, "test"));
     await waitFor(() => userEvent.tab());
     await waitFor(() => userEvent.clear(password));
-    screen.getByText("Please enter your password.");
+    await screen.findByText("Please enter your password.");
     expect(
       screen.queryByText(
         "Your username or password is not correct. Please check your input."
@@ -118,14 +129,19 @@ describe("Login input validation", () => {
     screen.getByText("Please enter your password.");
     expect(button).toBeEnabled();
     await waitFor(() => userEvent.type(password, "123456576"));
-    expect(
-      screen.queryByText("Please enter your password.")
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(
-        "Your username or password is not correct. Please check your input."
-      )
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Please enter your password.")
+      ).not.toBeInTheDocument()
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.queryByText(
+          "Your username or password is not correct. Please check your input."
+        )
+      ).not.toBeInTheDocument()
+    );
     expect(onLogin.mock.calls.length).toBe(0);
   });
 });
@@ -141,9 +157,12 @@ describe("Log in", () => {
     await waitFor(() => userEvent.tab());
     await userEvent.type(password, "nope,Wrong");
     await waitFor(() => userEvent.tab());
-    expect(
-      screen.queryByText("Please enter your password.")
-    ).not.toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Please enter your password.")
+      ).not.toBeInTheDocument()
+    );
 
     await waitFor(() => userEvent.click(button));
     await waitFor(() =>

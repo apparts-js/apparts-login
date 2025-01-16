@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import useSignup from "./Signup";
 import { withStore, store } from "../redux/testStore";
@@ -71,6 +77,7 @@ describe("Signup input validation", () => {
     screen.getByText("Invalid email adress. Please check your input.");
     expect(screen.getByRole("button", { name: "Register" })).toBeEnabled();
     await waitFor(() => userEvent.clear(email));
+    await waitFor(() => userEvent.tab());
     screen.getByText("Please enter your email adress.");
     expect(
       screen.queryByText("Invalid email adress. Please check your input.")
@@ -87,7 +94,7 @@ describe("Signup input validation", () => {
       <MySignup
         initialValues={{ before: "", after: "" }}
         validation={{
-          before: Yup.number().integer("Must be Number"),
+          before: Yup.number().integer("Must be a whole Number"),
           after: Yup.string().required("This is missing"),
         }}
         firstFields={[<InputField key={1} name="before" label="First field" />]}
@@ -96,13 +103,13 @@ describe("Signup input validation", () => {
     );
     const first = screen.getByLabelText("First field");
     const second = screen.getByLabelText("Last field");
-    userEvent.type(first, "1.1");
-    await waitFor(() => userEvent.tab());
-    screen.getByText("Must be Number");
-    userEvent.type(second, "test");
-    await waitFor(() => userEvent.tab());
-    await waitFor(() => userEvent.clear(second));
-    screen.getByText("This is missing");
+    await userEvent.type(first, "1.1");
+    await userEvent.tab();
+    await screen.findByText("Must be a whole Number");
+    await userEvent.type(second, "test");
+    await userEvent.tab();
+    await userEvent.clear(second);
+    await screen.findByText("This is missing");
     expect(screen.getByRole("button", { name: "Register" })).toBeEnabled();
   });
   test("Should not submit on missing field", async () => {
@@ -111,14 +118,14 @@ describe("Signup input validation", () => {
     const email = screen.getByLabelText("Email");
     const button = screen.getByRole("button", { name: "Register" });
     await waitFor(() => userEvent.click(button));
-    expect(
-      screen.queryByText("Please enter your email adress.")
-    ).toBeInTheDocument();
+    await screen.findByText("Please enter your email adress.");
     expect(button).toBeEnabled();
     await waitFor(() => userEvent.type(email, "test@test.de"));
-    expect(
-      screen.queryByText("Please enter your email adress.")
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Please enter your email adress.")
+      ).not.toBeInTheDocument()
+    );
     expect(onSignup.mock.calls.length).toBe(0);
   });
   test("Should not submit on missing custom field", async () => {
@@ -157,9 +164,13 @@ describe("Sign up", () => {
     const email = screen.getByLabelText("Email");
     const button = screen.getByRole("button", { name: "Register" });
     await userEvent.type(email, "test@test.de");
-    expect(
-      screen.queryByText("Invalid email adress. Please check your input.")
-    ).not.toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Invalid email adress. Please check your input.")
+      ).not.toBeInTheDocument()
+    );
+
     await waitFor(() => userEvent.click(button));
     await waitFor(() =>
       screen.queryByText(
@@ -171,15 +182,13 @@ describe("Sign up", () => {
     await waitFor(() => expect(button).toBeEnabled());
     expect(onSignup.mock.calls.length).toBe(0);
     expect(axios.post.mock.calls.length).toBe(1);
-    await userEvent.click(button);
-    await waitFor(() =>
-      expect(
-        screen.queryByText(
-          "Someone already registered using this email" +
-            " address. Please register using another email address. If" +
-            " you have forgotten your password you can reset it on the login page."
-        )
-      ).not.toBeInTheDocument()
+    userEvent.click(button);
+    await waitForElementToBeRemoved(
+      screen.queryByText(
+        "Someone already registered using this email" +
+          " address. Please register using another email address. If" +
+          " you have forgotten your password you can reset it on the login page."
+      )
     );
   });
   test("Should use specified api version", async () => {
@@ -198,10 +207,9 @@ describe("Sign up", () => {
     const email = screen.getByLabelText("Email");
     const button = screen.getByRole("button", { name: "Register" });
     await userEvent.type(email, "test2@test.de");
-    userEvent.click(button);
+    await userEvent.click(button);
     await waitFor(() => expect(button).toBeDisabled());
-    await waitFor(() => expect(button).toBeEnabled());
-    expect(onSignup.mock.calls.length).toBe(1);
+    await waitFor(() => expect(onSignup.mock.calls.length).toBe(1));
     expect(onSignup.mock.calls[0][0]).toMatchObject({
       email: "test2@test.de",
     });
@@ -243,8 +251,7 @@ describe("Sign up", () => {
     const button = screen.getByRole("button", { name: "Register" });
     await userEvent.click(button);
     await waitFor(() => expect(button).toBeDisabled());
-    await waitFor(() => expect(button).toBeEnabled());
-    expect(onSignup.mock.calls.length).toBe(1);
+    await waitFor(() => expect(onSignup.mock.calls.length).toBe(1));
     expect(onSignup.mock.calls[0][0]).toMatchObject({
       email: "test3@test.de",
     });

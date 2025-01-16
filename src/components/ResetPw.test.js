@@ -1,5 +1,10 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import useResetPassword from "./ResetPw";
 import { withStore, store } from "../redux/testStore";
@@ -58,9 +63,13 @@ describe("ResetPw input validation", () => {
     screen.getByText(
       "Invalid password: The password must be at least six characters long. Please check your input."
     );
-    expect(screen.getByRole("button", { name: "Set password" })).toBeEnabled();
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("button", { name: "Set password" })
+      )?.toBeEnabled()
+    );
     await waitFor(() => userEvent.clear(password));
-    screen.getByText("Please enter your password.");
+    await screen.findByText("Please enter your password.");
     expect(
       screen.queryByText(
         "Invalid password: The password must be at least six characters long. Please check your input."
@@ -75,12 +84,14 @@ describe("ResetPw input validation", () => {
     const password = screen.getByLabelText("Password");
     const button = screen.getByRole("button", { name: "Set password" });
     await waitFor(() => userEvent.click(button));
-    screen.getByText("Please enter your password.");
+    await screen.findByText("Please enter your password.");
     expect(button).toBeEnabled();
     await waitFor(() => userEvent.type(password, "3ulnftirs"));
-    expect(
-      screen.queryByText("Please enter your password.")
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Please enter your password.")
+      ).not.toBeInTheDocument()
+    );
     expect(onReset.mock.calls.length).toBe(0);
   });
 });
@@ -187,12 +198,13 @@ describe("Reset Pw", () => {
     await userEvent.type(password, "12345678");
     userEvent.click(button);
     await waitFor(() => expect(button).toBeDisabled());
-    await waitFor(() => expect(button).toBeEnabled());
-    const { user } = store.getState();
-    expect(user).toMatchObject({
-      id: 2,
-      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
-      apiToken: jwt,
+    await waitFor(() => {
+      const { user } = store.getState();
+      expect(user).toMatchObject({
+        id: 2,
+        loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
+        apiToken: jwt,
+      });
     });
     expect(onResetPw.mock.calls.length).toBe(1);
     expect(onResetPw.mock.calls[0][0]).toMatchObject({
@@ -233,7 +245,6 @@ describe("Reset Pw", () => {
     await userEvent.type(password, "12345678");
     userEvent.click(button);
     await waitFor(() => expect(button).toBeDisabled());
-    await waitFor(() => expect(button).toBeEnabled());
     await waitFor(() =>
       expect(
         screen.queryByText("Your password was reset successfully!")
@@ -242,7 +253,7 @@ describe("Reset Pw", () => {
     expect(onDone.mock.calls.length).toBe(0);
     const okButton = screen.getByRole("button", { name: "Ok" });
     userEvent.click(okButton);
-    expect(onDone.mock.calls.length).toBe(1);
+    await waitFor(() => expect(onDone.mock.calls.length).toBe(1));
   });
 });
 

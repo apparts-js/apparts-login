@@ -1,9 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import useLogin from "./components/Login";
 import useSignup from "./components/Signup";
 import useResetPw from "./components/ResetPw";
 import useRequestPwReset from "./components/RequestPwReset";
+import * as Yup from "yup";
+import { FormikInput as InputField } from "@apparts/web-components";
 
 import * as components from "@apparts/web-components";
 
@@ -45,7 +47,9 @@ const MyRequestPwReset = (props) => {
   return withStore(<RequestPwReset components={components} {...props} />);
 };
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root"));
+
+root.render(
   <React.StrictMode>
     <div
       style={{
@@ -57,6 +61,13 @@ ReactDOM.render(
       }}
     >
       <MySignup
+        initialValues={{ before: "", after: "" }}
+        validation={{
+          before: Yup.number("Must be a number").integer("Must be Number"),
+          after: Yup.string().required("This is missing"),
+        }}
+        firstFields={[<InputField key={1} name="before" label="First field" />]}
+        lastFields={[<InputField key={2} name="after" label="Last field" />]}
         containerStyle={{
           width: "min(500px, calc(100% - 20px))",
           padding: 40,
@@ -116,6 +127,5 @@ ReactDOM.render(
         }}
       />
     </div>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );

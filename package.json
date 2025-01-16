@@ -45,24 +45,28 @@
   },
   "devDependencies": {
     "@apparts/redux": "2.0.2",
-    "@apparts/web-components": "^1.0.1",
+    "@apparts/web-components": "^1.1.0",
+    "@babel/eslint-parser": "^7.26.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.8.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.0",
     "eslint": "^7.32.0",
     "jsonwebtoken": "^8.5.1",
     "prettier": "^2.6.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6",
-    "react-scripts": "^4.0.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
+    "react-scripts": "^5.0.1",
     "rimraf": "^3.0.2",
+    "rollup-plugin-babel": "^4.4.0",
     "web-vitals": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-redux": "^7.2.2"
+    "react": "^16 || ^17 || ^18 || ^19",
+    "react-dom": "^16 || ^17 || ^18 || ^19",
+    "react-redux": "^7 || ^8 || ^9"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
@@ -88,5 +92,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "volta": {
+    "node": "22.13.0",
+    "npm": "10.9.2"
   }
 }

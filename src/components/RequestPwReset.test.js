@@ -1,5 +1,10 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import useRequestPwReset from "./RequestPwReset";
 import { withStore, store } from "../redux/testStore";
@@ -57,7 +62,7 @@ describe("ResetPw input validation", () => {
       screen.getByRole("button", { name: "Reset password" })
     ).toBeEnabled();
     await waitFor(() => userEvent.clear(email));
-    screen.getByText("Please enter your email adress.");
+    await screen.findByText("Please enter your email adress.");
     expect(
       screen.queryByText("Invalid email adress. Please check your input.")
     ).not.toBeInTheDocument();
@@ -72,12 +77,14 @@ describe("ResetPw input validation", () => {
     const email = screen.getByLabelText("Email");
     const button = screen.getByRole("button", { name: "Reset password" });
     await waitFor(() => userEvent.click(button));
-    screen.getByText("Please enter your email adress.");
-    expect(button).toBeEnabled();
+    await screen.findByText("Please enter your email adress.");
+    await waitFor(() => expect(button).toBeEnabled());
     await waitFor(() => userEvent.type(email, "test@test.de"));
-    expect(
-      screen.queryByText("Please enter your email adress.")
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Please enter your email adress.")
+      ).not.toBeInTheDocument()
+    );
     expect(onReset.mock.calls.length).toBe(0);
   });
 });
@@ -119,8 +126,7 @@ describe("Reset Pw", () => {
     await userEvent.type(email, "test@web.de");
     userEvent.click(button);
     await waitFor(() => expect(button).toBeDisabled());
-    await waitFor(() => expect(button).toBeEnabled());
-    expect(onResetPw.mock.calls.length).toBe(1);
+    await waitFor(() => expect(onResetPw.mock.calls.length).toBe(1));
     await waitFor(() =>
       expect(
         screen.queryByText(

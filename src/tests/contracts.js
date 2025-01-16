@@ -5,6 +5,7 @@ const contracts = {};
 const apiContractWriter = (testName, context, status, returns) => {
   contracts[testName] = contracts[testName] || [];
   return async (...params) => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
     contracts[testName].push({
       context,
       status,
