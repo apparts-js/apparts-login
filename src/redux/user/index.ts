@@ -1,10 +1,11 @@
 import "redux-thunk";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type User = { email: string; loginToken: string; apiToken: string };
+const NAME = "user";
+type User = { id: string; email: string; loginToken: string; apiToken: string };
 
 export const renewApiToken = createAsyncThunk(
-  "user/renewApiToken",
+  `${NAME}/renewApiToken`,
   async (
     api: {
       get: (path: string) => {
@@ -28,7 +29,7 @@ const initialState: {
 } = { user: null };
 
 const userSlice = createSlice({
-  name: "user",
+  name: NAME,
   initialState,
   reducers: {
     updateUser(state, action: PayloadAction<Partial<User>>) {
@@ -49,7 +50,6 @@ const userSlice = createSlice({
 });
 
 const { actions, reducer } = userSlice;
-
 export const { login, logout, setLanguage, updateUser } = actions;
 export default reducer;
 

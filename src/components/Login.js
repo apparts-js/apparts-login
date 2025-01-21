@@ -14,7 +14,7 @@ const useLogin = ({
 }) => {
   const Login = ({
     containerStyle,
-    onLogin = () => {},
+    onLogin = (user) => {},
     onLogout = () => {},
     logMeOut,
     apiVersion,
