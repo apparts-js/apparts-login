@@ -53,7 +53,7 @@ const { actions, reducer } = userSlice;
 export const { login, logout, setLanguage, updateUser } = actions;
 export default reducer;
 
-export const getUserDataFromApiToken = (user: User) => {
+export const getUserDataFromApiToken = (user: { apiToken: string }) => {
   try {
     return JSON.parse(atob(user.apiToken.split(".")[1])) || {};
   } catch (e) {
