@@ -1,3 +1,4 @@
+import "redux-thunk";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type User = { email: string; loginToken: string; apiToken: string };
