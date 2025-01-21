@@ -2,12 +2,12 @@ import React, { useState, useCallback } from "react";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { login } from "../redux/user/index";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
 const useResetPassword = ({
-  components: { FormikInput: InputField, Button, Link, ErrorMessage },
+  components: { FormikInput: InputField, Button, ErrorMessage },
   strings: languages = defLanguages,
   api: { put },
   apiPrefix: apiPrefix = "user",
@@ -19,13 +19,13 @@ const useResetPassword = ({
     email,
     token,
     onDone,
-    login,
     apiVersion,
-    user,
     defaulLang = "en",
     welcome,
   }) => {
-    const strings = languages[user.language || defaulLang];
+    const userStore = useSelector(({ user }) => user);
+    const dispatch = useDispatch();
+    const strings = languages[userStore.language || defaulLang];
     const resetStrings = welcome ? strings.setPw : strings.resetPw;
 
     const [loading, setLoading] = useState(false);
@@ -56,7 +56,7 @@ const useResetPassword = ({
           const me = await req;
           setLoading(false);
           setResetDone(true);
-          login({ email, ...me });
+          dispatch(login({ email, ...me }));
           onResetPassword(me);
         } catch (e) {
           if (e) {
@@ -113,19 +113,14 @@ const useResetPassword = ({
     lang: PropTypes.string,
     containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
-    login: PropTypes.func,
     onDone: PropTypes.func,
     onResetPassword: PropTypes.func,
-    user: PropTypes.object,
     defaulLang: PropTypes.string,
     validatePassword: PropTypes.func,
     welcome: PropTypes.bool,
   };
 
-  return useCallback(
-    connect(({ user }) => ({ user }), { login })(ResetPassword),
-    [InputField, Button, Button, Link, ErrorMessage, put, languages]
-  );
+  return useCallback(ResetPassword, [put, languages, apiPrefix]);
 };
 
 export default useResetPassword;

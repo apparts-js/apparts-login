@@ -377,7 +377,7 @@ tools for this purpose.
   - The function returns an object with ~str~, the search string, that
     the login page will use to redirect after login and ~obj~, an object
     with the search parameters as of ~str~ as key-value pairs.
-- ~utils.buildGetLoggedInUser : (goToLogin) => user~ :: A function, used
+- ~utils.useBuildGetLoggedInUser : (goToLogin) => user~ :: A function, used
   to build a ~useUser~ function. It returns the currently logged in user
   (if any) and if no user is logged in, it calls the ~goToLogin~
   parameter function. That function then can redirect to the login page.
@@ -402,7 +402,7 @@ export const useRedirector = () => {
 
 export const useUser = () => {
   const history = useHistory();
-  utils.buildGetLoggedInUser(() => {
+  utils.useBuildGetLoggedInUser(() => {
     const redirectQuery = useRedirector();
     history.push("/login" + redirectQuery.str);
   });

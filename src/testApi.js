@@ -13,5 +13,6 @@ class MyRequest extends Request {
   }
 }
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const { get, put, patch, post, del } = useApi(MyRequest);
 export { get, put, patch, post, del };

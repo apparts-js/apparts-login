@@ -4,7 +4,14 @@ type User = { email: string; loginToken: string; apiToken: string };
 
 export const renewApiToken = createAsyncThunk(
   "user/renewApiToken",
-  async (api: any, thunkApi) => {
+  async (
+    api: {
+      get: (path: string) => {
+        authPW(email: string, loginToken: string): Promise<string>;
+      };
+    },
+    thunkApi
+  ) => {
     const { user } = thunkApi.getState() as { user: User };
     const apiToken = await api
       .get("user/apiToken")
@@ -49,6 +56,7 @@ export const getUserDataFromApiToken = (user: User) => {
   try {
     return JSON.parse(atob(user.apiToken.split(".")[1])) || {};
   } catch (e) {
+    console.log("Error parsing apiToken", e);
     return {};
   }
 };

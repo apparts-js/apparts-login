@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import * as Yup from "yup";
 import { login, logout } from "../redux/user/index";
 import { Formik, Form } from "formik";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
@@ -16,14 +16,13 @@ const useLogin = ({
     containerStyle,
     onLogin = () => {},
     onLogout = () => {},
-    login,
-    logout,
     logMeOut,
     apiVersion,
-    user: userStore,
     pwForgottenUrl = "/passwordreset",
     defaulLang = "en",
   }) => {
+    const userStore = useSelector(({ user }) => user);
+    const dispatch = useDispatch();
     const strings = languages[userStore.language || defaulLang];
     const user = userStore.user;
 
@@ -34,14 +33,14 @@ const useLogin = ({
       if (user?.id && !logMeOut) {
         onLogin(user);
       }
-    }, [user, logMeOut]);
+    }, [user, logMeOut, onLogin]);
 
     useEffect(() => {
       if (logMeOut) {
-        logout();
+        dispatch(logout());
         onLogout();
       }
-    }, [logMeOut]);
+    }, [logMeOut, dispatch, onLogout]);
 
     const onSubmit = async ({ email, password }) => {
       if (email && password) {
@@ -64,7 +63,7 @@ const useLogin = ({
         try {
           const me = await req;
           setLoading(false);
-          login({ email, ...me });
+          dispatch(login({ email, ...me }));
         } catch (e) {
           if (e) {
             alert(e);
@@ -113,18 +112,13 @@ const useLogin = ({
     apiVersion: PropTypes.number,
     onLogin: PropTypes.func,
     onLogout: PropTypes.func,
-    login: PropTypes.func,
-    logout: PropTypes.func,
     logMeOut: PropTypes.bool,
     user: PropTypes.object,
     pwForgottenUrl: PropTypes.string,
     defaulLang: PropTypes.string,
   };
 
-  return useCallback(
-    connect(({ user }) => ({ user }), { login, logout })(Login),
-    [InputField, Button, Link, ErrorMessage, get, languages]
-  );
+  return useCallback(Login, [get, languages, apiPrefix]);
 };
 
 export default useLogin;

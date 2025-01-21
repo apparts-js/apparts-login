@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
@@ -15,10 +15,10 @@ const useRequestPwReset = ({
     containerStyle,
     onRequestPasswordReset = () => {},
     apiVersion,
-    user,
     defaulLang = "en",
   }) => {
-    const strings = languages[user.language || defaulLang];
+    const userStore = useSelector(({ user }) => user);
+    const strings = languages[userStore.language || defaulLang];
 
     const [loading, setLoading] = useState(false);
     const [emailUnknown, setEmailUnknown] = useState(false);
@@ -87,17 +87,10 @@ const useRequestPwReset = ({
     containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
     onRequestPasswordReset: PropTypes.func,
-    user: PropTypes.object,
     defaulLang: PropTypes.string,
   };
 
-  return useCallback(connect(({ user }) => ({ user }), {})(RequestPwReset), [
-    InputField,
-    Button,
-    ErrorMessage,
-    post,
-    languages,
-  ]);
+  return useCallback(RequestPwReset, [post, languages, apiPrefix]);
 };
 
 export default useRequestPwReset;

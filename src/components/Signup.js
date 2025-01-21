@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from "react";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
 const useSignup = ({
-  components: { FormikInput: InputField, Button, Link, ErrorMessage },
+  components: { FormikInput: InputField, Button, ErrorMessage },
   strings: languages = defLanguages,
   apiPrefix: apiPrefix = "user",
   api: { post },
@@ -15,7 +15,6 @@ const useSignup = ({
     containerStyle,
     onSignup = () => {},
     apiVersion,
-    user,
     initialValues = {},
     validation = {},
     firstFields,
@@ -23,6 +22,7 @@ const useSignup = ({
     defaulLang = "en",
     transformBeforeSend = (a) => a,
   }) => {
+    const user = useSelector(({ user }) => user);
     const strings = languages[user.language || defaulLang];
 
     const [loading, setLoading] = useState(false);
@@ -91,7 +91,6 @@ const useSignup = ({
     containerStyle: PropTypes.object,
     apiVersion: PropTypes.number,
     onSignup: PropTypes.func,
-    user: PropTypes.object,
     defaulLang: PropTypes.string,
     initialValues: PropTypes.object,
     validation: PropTypes.object,
@@ -100,14 +99,7 @@ const useSignup = ({
     transformBeforeSend: PropTypes.func,
   };
 
-  return useCallback(connect(({ user }) => ({ user }), {})(Signup), [
-    InputField,
-    Button,
-    Link,
-    ErrorMessage,
-    post,
-    languages,
-  ]);
+  return useCallback(Signup, [post, languages, apiPrefix]);
 };
 
 export default useSignup;

@@ -31,7 +31,7 @@ export const buildRedirector = (queryParams, redirectExcludes = []) => {
   return { str: buildQueryString(queryObj), obj: queryObj };
 };
 
-export const buildGetLoggedInUser = (goToLogin) => {
+export const useBuildGetLoggedInUser = (goToLogin) => {
   const user = useSelector(({ user }) => user);
   useEffect(() => {
     if (!user.id) {

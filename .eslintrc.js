@@ -23,7 +23,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
   ],
-  parser: "babel-eslint",
+  parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -37,6 +37,7 @@ module.exports = {
       files: ["*-?test.js", "*test.js"],
       env: {
         jest: true,
+        node: true,
       },
     },
     {
