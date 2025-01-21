@@ -48,6 +48,7 @@
     "@apparts/web-components": "^1.1.0",
     "@babel/eslint-parser": "^7.26.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@reduxjs/toolkit": "^2.5.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^16.2.0",
@@ -72,6 +73,7 @@
     "web-vitals": "^1.0.1"
   },
   "peerDependencies": {
+    "@reduxjs/toolkit": "^2",
     "react": "^16 || ^17 || ^18 || ^19",
     "react-dom": "^16 || ^17 || ^18 || ^19",
     "react-redux": "^7 || ^8 || ^9"

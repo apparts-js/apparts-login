@@ -4,6 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import useLogin from "./Login";
 import { withStore, store } from "../redux/testStore";
+import { setLanguage } from "../redux/user";
 import * as api from "../testApi";
 import { persistContract, getApiMock as _getApiMock } from "../tests/contracts";
 const testName = "login";
@@ -52,7 +53,7 @@ describe("Login component renders", () => {
     );
   });
   test("Should render in German", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "de" });
+    store.dispatch(setLanguage("de"));
     render(<MyLogin />);
     screen.getByRole("button", { name: "Jetzt einloggen" });
     screen.getByLabelText("Email");
@@ -64,7 +65,7 @@ describe("Login component renders", () => {
 });
 describe("Login input validation", () => {
   test("Should render error on wrong/empty email", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "en" });
+    store.dispatch(setLanguage("en"));
 
     render(<MyLogin />);
     const email = screen.getByLabelText("Email");
@@ -224,9 +225,7 @@ describe("Log in", () => {
     await waitFor(() => expect(button).toBeEnabled());
     const { user } = store.getState();
     expect(user).toMatchObject({
-      id: 3,
-      loginToken: "dG9rZW4=",
-      apiToken: jwt,
+      user: { id: 3, loginToken: "dG9rZW4=", apiToken: jwt },
     });
     expect(onLogin.mock.calls.length).toBe(1);
     expect(onLogin.mock.calls[0][0]).toMatchObject({
@@ -247,7 +246,7 @@ describe("Log out", () => {
     const button = screen.getByRole("button", { name: "Log in" });
     await (() => expect(button).toBeEnabled());
     const { user } = store.getState();
-    expect(user).toStrictEqual({});
+    expect(user).toStrictEqual({ user: null });
     await waitFor(() => expect(onLogout.mock.calls.length).toBe(1));
     await waitFor(() => expect(onLogin.mock.calls.length).toBe(0));
   });

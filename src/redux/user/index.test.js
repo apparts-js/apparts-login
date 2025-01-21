@@ -39,7 +39,7 @@ afterEach(() => {
 });
 
 describe("Renew login token", () => {
-  test("Should should renew login token", async () => {
+  test("Should renew login token", async () => {
     const jwt = JWT(
       { id: 3, action: "login", email: "test@gmail.com" },
       JWTSECRET,
@@ -64,17 +64,21 @@ describe("Renew login token", () => {
     const { user } = store.getState();
 
     expect(user).toMatchObject({
-      id: 3,
-      loginToken: "dG9rZW4=",
-      apiToken: jwt,
+      user: {
+        id: 3,
+        loginToken: "dG9rZW4=",
+        apiToken: jwt,
+      },
     });
 
     store.dispatch(updateUser({ apiToken: 123 }));
 
     expect(store.getState().user).toMatchObject({
-      id: 3,
-      loginToken: "dG9rZW4=",
-      apiToken: 123,
+      user: {
+        id: 3,
+        loginToken: "dG9rZW4=",
+        apiToken: 123,
+      },
     });
     getApiMock(200, jwt);
 
@@ -82,9 +86,11 @@ describe("Renew login token", () => {
 
     await waitFor(() =>
       expect(store.getState().user).toMatchObject({
-        id: 3,
-        loginToken: "dG9rZW4=",
-        apiToken: jwt,
+        user: {
+          id: 3,
+          loginToken: "dG9rZW4=",
+          apiToken: jwt,
+        },
       })
     );
   });

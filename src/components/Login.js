@@ -20,17 +20,18 @@ const useLogin = ({
     logout,
     logMeOut,
     apiVersion,
-    user,
+    user: userStore,
     pwForgottenUrl = "/passwordreset",
     defaulLang = "en",
   }) => {
-    const strings = languages[user.lang || defaulLang];
+    const strings = languages[userStore.language || defaulLang];
+    const user = userStore.user;
 
     const [loading, setLoading] = useState(false);
     const [wrong, setWrong] = useState(false);
 
     useEffect(() => {
-      if (user.id && !logMeOut) {
+      if (user?.id && !logMeOut) {
         onLogin(user);
       }
     }, [user, logMeOut]);

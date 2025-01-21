@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import useRequestPwReset from "./RequestPwReset";
 import { withStore, store } from "../redux/testStore";
 import * as api from "../testApi";
+import { setLanguage } from "../redux/user";
 import {
   persistContract,
   postApiMock as _postApiMock,
@@ -35,7 +36,7 @@ describe("ResetPw component renders", () => {
     screen.getByLabelText("Email");
   });
   test("Should render in German", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "de" });
+    store.dispatch(setLanguage("de"));
     render(<MyPwReset />);
     screen.getByRole("button", { name: "Passwort zurücksetzen" });
     screen.getByLabelText("Email");
@@ -43,7 +44,7 @@ describe("ResetPw component renders", () => {
 });
 describe("ResetPw input validation", () => {
   test("Should render error on wrong/empty email", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "en" });
+    store.dispatch(setLanguage("en"));
 
     render(<MyPwReset />);
     const email = screen.getByLabelText("Email");

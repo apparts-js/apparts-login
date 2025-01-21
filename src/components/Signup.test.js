@@ -5,6 +5,7 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
+import { setLanguage } from "../redux/user";
 import userEvent from "@testing-library/user-event";
 import useSignup from "./Signup";
 import { withStore, store } from "../redux/testStore";
@@ -42,13 +43,13 @@ describe("Signup component renders", () => {
     screen.getByLabelText("Email");
   });
   test("Should render in German", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "de" });
+    store.dispatch(setLanguage("de"));
     render(<MySignup />);
     screen.getByRole("button", { name: "Registrieren" });
     screen.getByLabelText("Email");
   });
   test("Should render custom inputs", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "en" });
+    store.dispatch(setLanguage("en"));
     render(
       <MySignup
         initialValues={{ before: "", after: "" }}

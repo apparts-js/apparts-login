@@ -25,7 +25,7 @@ const useResetPassword = ({
     defaulLang = "en",
     welcome,
   }) => {
-    const strings = languages[user.lang || defaulLang];
+    const strings = languages[user.language || defaulLang];
     const resetStrings = welcome ? strings.setPw : strings.resetPw;
 
     const [loading, setLoading] = useState(false);

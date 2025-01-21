@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
+import { setLanguage } from "../redux/user";
 import userEvent from "@testing-library/user-event";
 import useResetPassword from "./ResetPw";
 import { withStore, store } from "../redux/testStore";
@@ -35,13 +36,13 @@ describe("ResetPw component renders", () => {
     screen.getByText("Please enter a new password:");
   });
   test("Should render in German", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "de" });
+    store.dispatch(setLanguage("de"));
     render(<MyPwReset />);
     screen.getByRole("button", { name: "Passwort festlegen" });
     screen.getByLabelText("Passwort");
   });
   test("Should render as welcome dialog", async () => {
-    store.dispatch({ type: "SET_LANGUAGE", lang: "en" });
+    store.dispatch(setLanguage("en"));
     render(<MyPwReset welcome />);
     screen.getByRole("button", { name: "Save" });
     screen.getByLabelText("Password");
@@ -196,9 +197,11 @@ describe("Reset Pw", () => {
     await waitFor(() => {
       const { user } = store.getState();
       expect(user).toMatchObject({
-        id: 2,
-        loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
-        apiToken: jwt,
+        user: {
+          id: 2,
+          loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
+          apiToken: jwt,
+        },
       });
     });
     expect(onResetPw.mock.calls.length).toBe(1);

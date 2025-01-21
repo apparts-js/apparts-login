@@ -18,7 +18,7 @@ const useRequestPwReset = ({
     user,
     defaulLang = "en",
   }) => {
-    const strings = languages[user.lang || defaulLang];
+    const strings = languages[user.language || defaulLang];
 
     const [loading, setLoading] = useState(false);
     const [emailUnknown, setEmailUnknown] = useState(false);

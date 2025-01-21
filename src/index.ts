@@ -9,5 +9,4 @@ const loginStore = { user };
 export { loginStore };
 export * as actions from "./redux/user/index";
 export * as utils from "./utils/index";
-
 export { getUserDataFromApiToken } from "./redux/user/index";

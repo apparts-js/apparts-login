@@ -23,7 +23,7 @@ const useSignup = ({
     defaulLang = "en",
     transformBeforeSend = (a) => a,
   }) => {
-    const strings = languages[user.lang || defaulLang];
+    const strings = languages[user.language || defaulLang];
 
     const [loading, setLoading] = useState(false);
     const [userExists, setUserExists] = useState(false);

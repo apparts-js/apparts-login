@@ -300,10 +300,7 @@
       "params": [
         "http://localhost:3000/v/1/user/apiToken?",
         {
-          "auth": {
-            "username": "test@gmail.com",
-            "password": "dG9rZW4="
-          }
+          "auth": {}
         }
       ]
     }
