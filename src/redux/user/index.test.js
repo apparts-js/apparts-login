@@ -47,7 +47,6 @@ describe("Renew login token", () => {
     );
     getApiMock(200, {
       id: 3,
-      loginToken: "dG9rZW4=",
       apiToken: jwt,
     });
     const onLogin = jest.fn();
@@ -66,7 +65,6 @@ describe("Renew login token", () => {
     expect(user).toMatchObject({
       user: {
         id: 3,
-        loginToken: "dG9rZW4=",
         apiToken: jwt,
       },
     });
@@ -76,7 +74,6 @@ describe("Renew login token", () => {
     expect(store.getState().user).toMatchObject({
       user: {
         id: 3,
-        loginToken: "dG9rZW4=",
         apiToken: 123,
       },
     });
@@ -88,7 +85,6 @@ describe("Renew login token", () => {
       expect(store.getState().user).toMatchObject({
         user: {
           id: 3,
-          loginToken: "dG9rZW4=",
           apiToken: jwt,
         },
       })

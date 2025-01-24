@@ -12,7 +12,8 @@
           "auth": {
             "username": "test@web.de",
             "password": "nope,Wrong"
-          }
+          },
+          "withCredentials": true
         }
       ]
     },
@@ -28,7 +29,8 @@
           "auth": {
             "username": "test@web.de",
             "password": "nope,Wrong"
-          }
+          },
+          "withCredentials": true
         }
       ]
     },
@@ -44,7 +46,8 @@
           "auth": {
             "username": "test@web.de",
             "password": "nope,Wrong"
-          }
+          },
+          "withCredentials": true
         }
       ]
     },
@@ -53,7 +56,6 @@
       "status": 200,
       "returns": {
         "id": 3,
-        "loginToken": "dG9rZW4=",
         "apiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNTc1MTU4NDAwLCJleHAiOjE1NzUxNTkwMDB9.v38UB00Q-o5BYOZuszpCNvhfPna6bMhqWHDJP--Oh1A"
       },
       "params": [
@@ -62,7 +64,8 @@
           "auth": {
             "username": "test@gmail.com",
             "password": "123456576"
-          }
+          },
+          "withCredentials": true
         }
       ]
     }
@@ -130,7 +133,6 @@
       "status": 200,
       "returns": {
         "id": 2,
-        "loginToken": "YXJvaWV0MzA5bHJzdGlvZW4=",
         "apiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3RAdGVzdC5kZSIsImlhdCI6MTU3NTE1ODQwMCwiZXhwIjoxNTc1MTU5MDAwfQ.NrtIAWKGp4BjfYkeAwZokOPPBvyO_-OO5HIo0Ez-vSk"
       },
       "params": [
@@ -151,7 +153,6 @@
       "status": 200,
       "returns": {
         "id": 4,
-        "loginToken": "YXJvaWV0MzA5bHJzdGlvZW4=",
         "apiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsImlhdCI6MTU3NTE1ODQwMCwiZXhwIjoxNTc1MTU5MDAwfQ.nlM5r16ZfZlZGwQNvBf0QGdMfXLMyZNwyAM2yRo7Nlg"
       },
       "params": [
@@ -280,7 +281,6 @@
       "status": 200,
       "returns": {
         "id": 3,
-        "loginToken": "dG9rZW4=",
         "apiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNTc1MTU4NDAwLCJleHAiOjE1NzUxNTkwMDB9.v38UB00Q-o5BYOZuszpCNvhfPna6bMhqWHDJP--Oh1A"
       },
       "params": [
@@ -289,7 +289,8 @@
           "auth": {
             "username": "test@gmail.com",
             "password": "123456576"
-          }
+          },
+          "withCredentials": true
         }
       ]
     },
@@ -299,9 +300,7 @@
       "returns": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiYWN0aW9uIjoibG9naW4iLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNTc1MTU4NDAwLCJleHAiOjE1NzUxNTkwMDB9.v38UB00Q-o5BYOZuszpCNvhfPna6bMhqWHDJP--Oh1A",
       "params": [
         "http://localhost:3000/v/1/user/apiToken?",
-        {
-          "auth": {}
-        }
+        {}
       ]
     }
   ]

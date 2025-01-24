@@ -98,8 +98,7 @@ Parameters:
 - ~apiVersion: <?number>~ :: Default: 1. An optional Api version, to be passed on to
   @apparts/api on api calls.
 - ~onLogin: <?(user: <object>) => <any>>~ :: A function that will be called, after the login
-  has happened. The function get's passed an object, that contains ~id~,
-  ~loginToken~, ~apiToken~, ~email~.
+  has happened. The function get's passed an object, that contains ~id~, ~apiToken~, ~email~.
 - ~onLogout: <?func>~ :: A function that will be called, when the user
   logged out.
 - ~login: <?func>~ :: Passed through redux.

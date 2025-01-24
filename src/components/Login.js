@@ -48,6 +48,9 @@ const useLogin = ({
         setWrong(false);
         setLoading(true);
         const req = get(apiPrefix + "/login")
+          .settings({
+            withCredentials: true,
+          })
           .authPW(email, password)
           .on(425, () => {
             setWrong(strings.login.tooManyRequests);

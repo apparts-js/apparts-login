@@ -178,7 +178,6 @@ describe("Reset Pw", () => {
     );
     putApiMock(200, {
       id: 2,
-      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
       apiToken: jwt,
     });
     const onResetPw = jest.fn();
@@ -199,7 +198,6 @@ describe("Reset Pw", () => {
       expect(user).toMatchObject({
         user: {
           id: 2,
-          loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
           apiToken: jwt,
         },
       });
@@ -207,7 +205,6 @@ describe("Reset Pw", () => {
     expect(onResetPw.mock.calls.length).toBe(1);
     expect(onResetPw.mock.calls[0][0]).toMatchObject({
       id: 2,
-      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
       apiToken: jwt,
     });
     await waitFor(() =>
@@ -225,7 +222,6 @@ describe("Reset Pw", () => {
     );
     putApiMock(200, {
       id: 4,
-      loginToken: new Buffer("aroiet309lrstioen").toString("base64"),
       apiToken: jwt,
     });
     const onResetPw = jest.fn();

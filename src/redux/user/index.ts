@@ -2,22 +2,18 @@ import "redux-thunk";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const NAME = "user";
-type User = { id: string; email: string; loginToken: string; apiToken: string };
+type User = { id: string; email: string; apiToken: string };
 
 export const renewApiToken = createAsyncThunk(
   `${NAME}/renewApiToken`,
   async (
     api: {
-      get: (path: string) => {
-        authPW(email: string, loginToken: string): Promise<string>;
-      };
+      get: (path: string) => Promise<string>;
     },
     thunkApi
   ) => {
-    const { user } = thunkApi.getState() as { user: User };
-    const apiToken = await api
-      .get("user/apiToken")
-      .authPW(user.email, user.loginToken);
+    const apiToken = await api.get("user/apiToken");
+
     thunkApi.dispatch(updateUser({ apiToken }));
     return;
   }

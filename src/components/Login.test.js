@@ -210,7 +210,6 @@ describe("Log in", () => {
 
     getApiMock(200, {
       id: 3,
-      loginToken: "dG9rZW4=",
       apiToken: jwt,
     });
     const onLogin = jest.fn();
@@ -225,12 +224,11 @@ describe("Log in", () => {
     await waitFor(() => expect(button).toBeEnabled());
     const { user } = store.getState();
     expect(user).toMatchObject({
-      user: { id: 3, loginToken: "dG9rZW4=", apiToken: jwt },
+      user: { id: 3, apiToken: jwt },
     });
     expect(onLogin.mock.calls.length).toBe(1);
     expect(onLogin.mock.calls[0][0]).toMatchObject({
       id: 3,
-      loginToken: "dG9rZW4=",
       apiToken: jwt,
     });
   });
