@@ -6,11 +6,12 @@ import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
 const useSignup = ({
-  components: { FormikInput: InputField, Button, ErrorMessage },
+  components,
   strings: languages = defLanguages,
   apiPrefix: apiPrefix = "user",
   api: { post },
 }) => {
+  const { FormikInput: InputField, Button, ErrorMessage } = components;
   const Signup = ({
     containerStyle,
     onSignup = () => {},
@@ -99,7 +100,14 @@ const useSignup = ({
     transformBeforeSend: PropTypes.func,
   };
 
-  return useCallback(Signup, [post, languages, apiPrefix]);
+  return useCallback(Signup, [
+    post,
+    languages,
+    apiPrefix,
+    components,
+    languages,
+    post,
+  ]);
 };
 
 export default useSignup;

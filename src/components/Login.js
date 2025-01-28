@@ -7,11 +7,12 @@ import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
 const useLogin = ({
-  components: { FormikInput: InputField, Button, Link, ErrorMessage },
+  components,
   strings: languages = defLanguages,
   apiPrefix: apiPrefix = "user",
   api: { get },
 }) => {
+  const { FormikInput: InputField, Button, Link, ErrorMessage } = components;
   const Login = ({
     containerStyle,
     // eslint-disable-next-line no-unused-vars
@@ -122,7 +123,14 @@ const useLogin = ({
     defaulLang: PropTypes.string,
   };
 
-  return useCallback(Login, [get, languages, apiPrefix]);
+  return useCallback(Login, [
+    get,
+    languages,
+    apiPrefix,
+    components,
+    languages,
+    get,
+  ]);
 };
 
 export default useLogin;

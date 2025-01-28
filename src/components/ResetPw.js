@@ -7,11 +7,12 @@ import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
 const useResetPassword = ({
-  components: { FormikInput: InputField, Button, ErrorMessage },
+  components,
   strings: languages = defLanguages,
   api: { put },
   apiPrefix: apiPrefix = "user",
 }) => {
+  const { FormikInput: InputField, Button, ErrorMessage } = components;
   const ResetPassword = ({
     containerStyle,
     onResetPassword = () => {},
@@ -119,7 +120,14 @@ const useResetPassword = ({
     welcome: PropTypes.bool,
   };
 
-  return useCallback(ResetPassword, [put, languages, apiPrefix]);
+  return useCallback(ResetPassword, [
+    put,
+    languages,
+    apiPrefix,
+    components,
+    languages,
+    put,
+  ]);
 };
 
 export default useResetPassword;

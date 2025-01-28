@@ -6,11 +6,13 @@ import PropTypes from "prop-types";
 import * as defLanguages from "../lang/index";
 
 const useRequestPwReset = ({
-  components: { FormikInput: InputField, Button, ErrorMessage },
+  components,
   strings: languages = defLanguages,
   api: { post },
   apiPrefix: apiPrefix = "user",
 }) => {
+  const { FormikInput: InputField, Button, ErrorMessage } = components;
+
   const RequestPwReset = ({
     containerStyle,
     onRequestPasswordReset = () => {},
@@ -90,7 +92,14 @@ const useRequestPwReset = ({
     defaulLang: PropTypes.string,
   };
 
-  return useCallback(RequestPwReset, [post, languages, apiPrefix]);
+  return useCallback(RequestPwReset, [
+    post,
+    languages,
+    apiPrefix,
+    components,
+    languages,
+    post,
+  ]);
 };
 
 export default useRequestPwReset;
