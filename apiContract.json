@@ -83,6 +83,10 @@
           "password": "109330-"
         },
         {
+          "auth": {
+            "username": "test@test.de",
+            "password": "abc!"
+          },
           "withCredentials": true
         }
       ]
@@ -99,6 +103,10 @@
           "password": "test@web.de"
         },
         {
+          "auth": {
+            "username": "test",
+            "password": "abc"
+          },
           "withCredentials": true
         }
       ]
@@ -116,6 +124,10 @@
           "password": "12345678"
         },
         {
+          "auth": {
+            "username": "test@test.de",
+            "password": "cmVzZXQ="
+          },
           "withCredentials": true
         }
       ]
@@ -133,6 +145,10 @@
           "password": "12345678"
         },
         {
+          "auth": {
+            "username": "test2@gmail.com",
+            "password": "cmVzZXQ="
+          },
           "withCredentials": true
         }
       ]

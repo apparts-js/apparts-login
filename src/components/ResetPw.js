@@ -42,6 +42,7 @@ const useResetPassword = ({
         setTokenWrong(false);
         setLoading(true);
         const req = put(apiPrefix)
+          .authPW(email, token)
           .settings({
             withCredentials: true,
           })
