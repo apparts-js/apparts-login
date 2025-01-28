@@ -119,26 +119,6 @@ describe("Reset Pw", () => {
     expect(button).toBeEnabled();
     expect(onReset.mock.calls.length).toBe(0);
   });
-  test("Should submit and throw error on invalid user", async () => {
-    putApiMock(401, { error: "User not found" });
-    const onReset = jest.fn();
-    render(<MyPwReset token="abc" email="abc" onResetPassword={onReset} />);
-    const password = screen.getByLabelText("Password");
-    const button = screen.getByRole("button", { name: "Set password" });
-    await userEvent.type(password, "109330-");
-    await waitFor(() => userEvent.click(button));
-    await waitFor(() =>
-      expect(
-        screen.queryByText(
-          "There must have happened some kind of error: This is not a" +
-            " proper password reset link. Please check again or contact customer" +
-            " support."
-        )
-      ).toBeInTheDocument()
-    );
-    expect(button).toBeEnabled();
-    expect(axios.put.mock.calls.length).toBe(1);
-  });
   test("Should submit and throw error on wrong token", async () => {
     putApiMock(401, { error: "Unauthorized" });
     const onReset = jest.fn();
@@ -162,7 +142,7 @@ describe("Reset Pw", () => {
     expect(axios.put.mock.calls.length).toBe(1);
   });
   test("Should use specified api version", async () => {
-    putApiMock(401, { error: "User not found" });
+    putApiMock(401, { error: "Unauthorized" });
     render(<MyPwReset email="test" token="abc" apiVersion={2} />);
     const password = screen.getByLabelText("Password");
     await userEvent.type(password, "test@web.de");

@@ -75,7 +75,7 @@
       "context": "put",
       "status": 401,
       "returns": {
-        "error": "User not found"
+        "error": "Unauthorized"
       },
       "params": [
         "http://localhost:3000/v/1/user?",
@@ -83,10 +83,7 @@
           "password": "109330-"
         },
         {
-          "auth": {
-            "username": "abc",
-            "password": "abc"
-          }
+          "withCredentials": true
         }
       ]
     },
@@ -97,34 +94,12 @@
         "error": "Unauthorized"
       },
       "params": [
-        "http://localhost:3000/v/1/user?",
-        {
-          "password": "109330-"
-        },
-        {
-          "auth": {
-            "username": "test@test.de",
-            "password": "abc!"
-          }
-        }
-      ]
-    },
-    {
-      "context": "put",
-      "status": 401,
-      "returns": {
-        "error": "User not found"
-      },
-      "params": [
         "http://localhost:3000/v/2/user?",
         {
           "password": "test@web.de"
         },
         {
-          "auth": {
-            "username": "test",
-            "password": "abc"
-          }
+          "withCredentials": true
         }
       ]
     },
@@ -141,10 +116,7 @@
           "password": "12345678"
         },
         {
-          "auth": {
-            "username": "test@test.de",
-            "password": "cmVzZXQ="
-          }
+          "withCredentials": true
         }
       ]
     },
@@ -161,10 +133,7 @@
           "password": "12345678"
         },
         {
-          "auth": {
-            "username": "test2@gmail.com",
-            "password": "cmVzZXQ="
-          }
+          "withCredentials": true
         }
       ]
     }

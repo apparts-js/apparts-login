@@ -41,11 +41,10 @@ const useResetPassword = ({
         setTokenWrong(false);
         setLoading(true);
         const req = put(apiPrefix)
-          .authPW(email, token)
-          .data({ password })
-          .on({ status: 401, error: "User not found" }, () => {
-            setTokenWrong(true);
+          .settings({
+            withCredentials: true,
           })
+          .data({ password })
           .on({ status: 401, error: "Unauthorized" }, () => {
             setTokenWrong(true);
           });
