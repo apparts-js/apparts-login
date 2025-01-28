@@ -92,6 +92,7 @@ const useRequestPwReset = ({
     defaulLang: PropTypes.string,
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(RequestPwReset, [
     post,
     languages,

@@ -100,6 +100,7 @@ const useSignup = ({
     transformBeforeSend: PropTypes.func,
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(Signup, [
     post,
     languages,

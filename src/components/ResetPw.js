@@ -125,6 +125,7 @@ const useResetPassword = ({
     welcome: PropTypes.bool,
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(ResetPassword, [
     put,
     languages,
