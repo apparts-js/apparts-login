@@ -56,8 +56,7 @@ const useResetPassword = ({
         try {
           const me = await req;
           setLoading(false);
-          setResetDone(true);
-          dispatch(login({ email, ...me }));
+          setResetDone({ email, ...me });
           onResetPassword(me);
         } catch (e) {
           if (e) {
@@ -68,11 +67,16 @@ const useResetPassword = ({
       }
     };
 
+    const onDoneFn = () => {
+      dispatch(login(resetDone));
+      onDone && onDone();
+    };
+
     if (resetDone) {
       return (
         <div>
           <div>{resetStrings.done}</div>
-          {onDone && <Button onClick={onDone}>{resetStrings.ok}</Button>}
+          <Button onClick={onDoneFn}>{resetStrings.ok}</Button>
         </div>
       );
     }

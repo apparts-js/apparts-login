@@ -173,15 +173,6 @@ describe("Reset Pw", () => {
     await userEvent.type(password, "12345678");
     userEvent.click(button);
     await waitFor(() => expect(button).toBeDisabled());
-    await waitFor(() => {
-      const { user } = store.getState();
-      expect(user).toMatchObject({
-        user: {
-          id: 2,
-          apiToken: jwt,
-        },
-      });
-    });
     expect(onResetPw.mock.calls.length).toBe(1);
     expect(onResetPw.mock.calls[0][0]).toMatchObject({
       id: 2,
@@ -192,7 +183,17 @@ describe("Reset Pw", () => {
         screen.queryByText("Your password was reset successfully!")
       ).toBeInTheDocument()
     );
-    expect(screen.queryByLabelText("Ok")).not.toBeInTheDocument();
+    expect(screen.queryByText("Ok")).toBeInTheDocument();
+    userEvent.click(screen.queryByText("Ok"));
+    await waitFor(() => {
+      const { user } = store.getState();
+      expect(user).toMatchObject({
+        user: {
+          id: 2,
+          apiToken: jwt,
+        },
+      });
+    });
   });
   test("Should show ok button after reset", async () => {
     const jwt = JWT(
